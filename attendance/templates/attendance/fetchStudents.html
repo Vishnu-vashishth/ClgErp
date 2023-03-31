@@ -1,0 +1,88 @@
+{% extends 'attendance/base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<form class="flex flex-col items-center space-y-8 w-full shadow-lg p-8">
+    <div class="flex flex-col sm:flex-row md:space-x-4 sm:items-center sm:justify-between">
+      <label class="text-gray-700 font-semibold mb-2 sm:mr-4 sm:mb-0" for="animals">
+        Choose an animal:
+        <select id="animals" class="block px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm w-full sm:w-52 focus:outline-none focus:ring-primary-500 focus:border-primary-500" name="animals">
+          <option value="">
+            Select an animal
+          </option>
+          <option value="dog">
+            Dog
+          </option>
+          <option value="cat">
+            Cat
+          </option>
+          <option value="hamster">
+            Hamster
+          </option>
+          <option value="parrot">
+            Parrot
+          </option>
+          <option value="spider">
+            Spider
+          </option>
+          <option value="goldfish">
+            Goldfish
+          </option>
+        </select>
+      </label>
+  
+      <label class="text-gray-700 font-semibold mb-2 sm:mr-4 sm:mb-0" for="colors">
+        Choose a color:
+        <select id="colors" class="block px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm w-full sm:w-52 focus:outline-none focus:ring-primary-500 focus:border-primary-500" name="colors">
+          <option value="">
+            Select a color
+          </option>
+          <option value="red">
+            Red
+          </option>
+          <option value="green">
+            Green
+          </option>
+          <option value="blue">
+            Blue
+          </option>
+          <option value="yellow">
+            Yellow
+          </option>
+        </select>
+      </label>
+  
+      <label class="text-gray-700 font-semibold" for="fruits">
+        Choose a fruit:
+        <select id="fruits" class="block px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm w-full sm:w-52 focus:outline-none focus:ring-primary-500 focus:border-primary-500" name="fruits">
+          <option value="">
+            Select a fruit
+          </option>
+          <option value="apple">
+            Apple
+          </option>
+          <option value="banana">
+            Banana
+          </option>
+          <option value="orange">
+            Orange
+          </option>
+          <option value="grape">
+            Grape
+          </option>
+        </select>
+      </label>
+    </div>
+  
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+      Fetach
+    </button>
+  </form>
+  
+  
+  
+
+
+{% endblock content %}

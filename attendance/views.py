@@ -7,3 +7,7 @@ def index(request):
 
 def list(request):
     return render( request, 'attendance/studentList.html', {"title":"list" } )
+
+
+def fetchStudents(request):
+    return render(request, 'attendance/fetchStudents.html', {"title":"fetchStudents" })
