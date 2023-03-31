@@ -4,14 +4,16 @@
 
 
 {% block content %}
-{% if title %}
-{%if title == "Home"%}
 
-{%include "root/home.html"%}
+{% if title %}
+
+{% if title == "Home" %}
+
+{% include "root/home.html" %}
 
 {% elif title == 'Login'%}
 
-{% include 'login.html'%}
+{% include "root/login.html" %}
 
 
 {% endif %}
