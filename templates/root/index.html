@@ -1,0 +1,20 @@
+{% extends 'root/base.html'%}
+
+{% block title  %}{{title}} {% endblock %}
+
+
+{% block content %}
+{% if title %}
+{%if title == "Home"%}
+
+{%include "root/home.html"%}
+
+{% elif title == 'Login'%}
+
+{% include 'login.html'%}
+
+
+{% endif %}
+{% endif %}
+
+{% endblock %}

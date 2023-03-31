@@ -2,7 +2,13 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 def login(request):
-    return render(request, "root/login.html")
+    context = {
+        "title ": "Login"
+        }
+    
+    return render(request, "root/index.html",context = context)
 
 def home(request):
-    return render(request, "root/home.html")
+    context = {
+        "title ": "Home"}
+    return render(request, "root/index.html",context =  context)

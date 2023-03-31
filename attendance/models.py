@@ -66,7 +66,7 @@ class Agg_Attendance(models.Model):
         self.total_classes = self.total_classes + 1
         if self.status == 'P':
             self.attended_classes = self.attended_classes + 1
-        super(Attendance, self).save(*args, **kwargs)
+        super(Agg_Attendance, self).save(*args, **kwargs)
   
     def __str__(self):
         return self.student.name 
