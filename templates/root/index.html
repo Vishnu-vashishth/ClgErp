@@ -3,13 +3,21 @@
 {% block title  %}{{title}} {% endblock %}
 
 
+
+{% block nav%}
+{% include "root/navbar.html" %}
+{% endblock%}
+
+
 {% block content %}
 
 {% if title %}
 
 {% if title == "Home" %}
 
+
 {% include "root/home.html" %}
+
 
 {% elif title == 'Login'%}
 

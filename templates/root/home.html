@@ -1,13 +1,115 @@
 {% load static %}
+<style>
+  @keyframes change-gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
 
-{% block nav%}
-{% include "root/navbar.html" %}
-{% endblock%}
+  .animate-gradient-1 {
+    background-image: linear-gradient(to right, #F56565, #9F7AEA, #ED64A6);
+    animation: change-gradient 10s ease-in-out infinite;
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .animate-gradient-2 {
+    background-image: linear-gradient(to right, #38B2AC, #B2F5EA, #6EE7B7);
+    animation: change-gradient 10s ease-in-out infinite;
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .animate-gradient-3 {
+    background-image: linear-gradient(to right, #FDBA74, #FCD34D, #FBBF24);
+    animation: change-gradient 10s ease-in-out infinite;
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-opaque {
+    color: black;
+  }
+</style>
+
+<div class="bg-white w-full h-screen">
+  <div class="w-full h-screen flex items-center justify-center">
+    <span>
+      <h1 class="text-9xl font-bolder animate-gradient-1 transition duration-500 ease-in-out">Read.</h1>
+    </span>
+    <span>
+      <h1 class="text-9xl font-bolder transition duration-500 ease-in-out">Write.</h1>
+    </span>
+    <span>
+      <h1 class="text-9xl font-bolder transition duration-500 ease-in-out">Learn</h1>
+    </span>
+  </div>
+</div>
 
 
-<div class >
-    <video class="w-full h-200 " muted autoplay loop >
-        <source src="{% static 'img/video.mp4' %}" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    </div>
+<script>
+  const first = document.querySelector('.animate-gradient-1');
+  const second = document.querySelectorAll('h1')[1];
+  const third = document.querySelectorAll('h1')[2];
+
+  setInterval(() => {
+    // Set the first span to the second gradient color
+    first.classList.remove('animate-gradient-1', 'animate-gradient-3');
+    first.classList.add('animate-gradient-2');
+
+    // Set the second span to opaque (black)
+    second.classList.add('text-opaque');
+    second.classList.remove('animate-gradient-1', 'animate-gradient-3');
+
+    // Set the third span to opaque (black)
+    third.classList.add('text-opaque');
+    third.classList.remove('animate-gradient-1', 'animate-gradient-2');
+
+    // Wait for a bit before continuing to the next transition
+    setTimeout(() => {
+      // Set the second span to the first gradient color
+      second.classList.remove('text-opaque');
+      second.classList.add('animate-gradient-1');
+    }, 1000);
+
+  }, 4000);
+
+  setInterval(() => {
+    // Set the first span to the third gradient color
+    first.classList.remove('animate-gradient-2', 'animate-gradient-1');
+    first.classList.add('animate-gradient-3');
+
+    // Set the second span to opaque (black)
+    second.classList.add('text-opaque');
+    second.classList.remove('animate-gradient-1', 'animate-gradient-3');
+
+    // Set the third span to opaque (black)
+    third.classList.add('text-opaque');
+    third.classList.remove('animate-gradient-2', 'animate-gradient-1');
+
+    // Wait for a bit before continuing to the next transition
+    setTimeout(() => {
+      // Set the third span to the first gradient color
+      third.classList.remove('text-opaque');
+      third.classList.add('animate-gradient-1');
+    }, 1000);
+
+  }, 8000);
+</script>
+
+
