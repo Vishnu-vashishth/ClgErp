@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.hashers import make_password
 # Create your models here.
 class Student (models.Model):
     name = models.CharField(max_length=100)
@@ -8,18 +8,52 @@ class Student (models.Model):
         ('CSE', 'Computer Science Engineering'),
         ('ECE', 'Electronics and Communication Engineering'),
     ]
+    SEM_CHOICES = [
+        (1, 'First'),
+        (2, 'Second'),
+        (3, 'Third'),
+        (4, 'Fourth'),
+        (5, 'Fifth'),
+        (6, 'Sixth'),
+        (7, 'Seventh'),
+        (8, 'Eighth'),
+    ]
+    
+    email = models.EmailField(max_length=100)
+    password = models.CharField(max_length=100)
+    roll = models.IntegerField()
+    curent_sem = models.IntegerField(default =1,choices=SEM_CHOICES)
     department = models.CharField(max_length=3, choices=DEPARTMENT_CHOICES)
     father_name = models.CharField(max_length=100)
     mother_name = models.CharField(max_length=100)
     address = models.CharField(max_length=150)
     phone = models.CharField(max_length=100)
     father_phone = models.CharField(max_length=100)
-    roll = models.IntegerField()
-    email = models.EmailField(max_length=100)
-    password = models.CharField(max_length=100)
+    otp = models.IntegerField(default=None,null=True)
     def __str__(self):
         return self.name
     
+    def save(self,*args, **kwargs):
+        self.password = make_password(self.password)
+    
+    def increaseSem(self):
+        self.curent_sem = self.curent_sem + 1
+        self.save()
+    
+
+class Teacher(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
+    password = models.CharField(max_length=100)
+    phone = models.CharField(max_length=100)
+    otp = models.IntegerField(default=None,null=True)
+
+    def __str__(self):
+        return self.name
+    
+    def save(self,*args, **kwargs):
+        self.password = make_password(self.password)
+        super(Teacher,self).save(*args, **kwargs)
 
 
 class Subject(models.Model):
@@ -44,6 +78,7 @@ class Subject(models.Model):
     
     
     sem = models.IntegerField(choices=SEM_CHOICES)
+
     department = models.CharField(max_length=3, choices=DEPARTMENT_CHOICES)
     
     def __str__(self):
