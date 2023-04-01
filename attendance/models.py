@@ -53,8 +53,8 @@ class Subject(models.Model):
 
 class Agg_Attendance(models.Model):
     ATTENDANCE_STATUS = (
-        ('P', 'Present'),
-        ('A', 'Absent'),
+        ('1', 'Present'),
+        ('0', 'Absent'),
     )
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
@@ -64,7 +64,7 @@ class Agg_Attendance(models.Model):
 
     def save(self, *args, **kwargs):
         self.total_classes = self.total_classes + 1
-        if self.status == 'P':
+        if self.status == '1':
             self.attended_classes = self.attended_classes + 1
         super(Agg_Attendance, self).save(*args, **kwargs)
   
