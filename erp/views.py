@@ -164,3 +164,9 @@ def forgot(request):
                 return redirect('Login')
             
     return render(request, "root/index.html",context =  context)
+
+
+def logout(request):
+    response = redirect('Login')
+    response.delete_cookie('token')
+    return response
