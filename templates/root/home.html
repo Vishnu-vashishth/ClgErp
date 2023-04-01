@@ -50,10 +50,27 @@
     margin-top: 10vh;
     height: 50vh;
   }
+  @media screen and (max-width: 768px) {
+    body {
+      padding-top: 70px; /* Add some padding to give space between content and navbar */
+    }
+    .gradienttextDiv {
+      flex-direction: column;
+    }
+    
+    .gradienttextDiv span {
+      margin-bottom: 20px;
+      padding: 10px; /* Add some padding to give space between headings */
+    }
+    .gradienttextDiv h1 {
+      font-size: 4rem; /* Change this value to your desired font size */
+      line-height: 0.9; /* Add a line-height property to the h1 elements *
+    }
+  }
+  
 </style>
 
-
-<div class="bg-white w-full h-screen">
+ <div class="bg-white w-full h-screen">
   <div class="w-full gradienttextDiv flex items-center justify-center">
     <span>
       <h1 class="text-4xl md:text-9xl font-extrabold animate-gradient-1 transition duration-500 ease-in-out">Read.</h1>
@@ -62,19 +79,11 @@
       <h1 class="text-4xl md:text-9xl font-extrabold transition duration-500 ease-in-out">Write.</h1>
     </span>
     <span>
-      <h1 class="text-4xl md:text-9xl font-extrabold transition duration-500 ease-in-out">Learn</h1>
+      <h1 class="text-4xl md:text-9xl font-extrabold transition duration-500 ease-in-out">Learn.</h1>
     </span>
   </div>
 </div>
 
-
-
-
- 
-
-
-
-</div>
 
 
 <script>
