@@ -7,8 +7,8 @@ from django.core.mail import send_mail
 import random
 from dotenv import load_dotenv
 import os
+from django.contrib import messages
 load_dotenv()
-
 
 
 def home(request):
@@ -48,11 +48,13 @@ def login(request):
                     encode = jwt.encode({'email': email}, settings.SECRET_KEY, algorithm='HS256')
                     response = redirect('attendance')
                     response.set_cookie('token', encode)
+                    messages.success(request, 'Login Successfully')
                     return response
                 else:
-                    message = "Invalid Credentials"
+                    messages.error(request, 'Invalid Credentials')
                     return redirect('Login')
             except:
+                messages.error(request, 'something went wrong')
                 return redirect('Login')
             
         elif role == "teacher":
@@ -62,11 +64,14 @@ def login(request):
                     encode = jwt.encode({'email': email}, settings.SECRET_KEY, algorithm='HS256')
                     response = redirect('attendance')
                     response.set_cookie('token', encode)
+                    messages.success(request, 'Login Successfully')
                     return response
                     
                 else:
+                    messages.error(request, 'Invalid Credentials')
                     return redirect('Login')
             except:
+                messages.error(request, 'something went wrong')
                 return redirect('Login')
 
     return render(request, "root/index.html",context =  context)
@@ -84,25 +89,33 @@ def reset(request):
             password = request.POST["password"]
             student = Student.objects.get(email = email)
             if student:
-                if otp == student.otp:
+                if otp == student.otp and otp != None :
                     student.password = password
+                    student.otp = None
                     student.save()
+                    messages.success(request, 'Password Reset Successfully')
                     return redirect('Login')
                 else:
+                    messages.error(request, 'Invalid Otp')
                     return redirect('Login')
             else:
                 teacher = Teacher.objects.get(email = email)
                 if teacher:
                     if otp == teacher.otp:
                         teacher.password = password
+                        teacher.otp = None
                         teacher.save()
+                        messages.success(request, 'Password Reset Successfully')
                         return redirect('Login')
                     else:
+                        messages.error(request, 'Invalid Otp')
                         return redirect('Login')
                 else:
+                    messages.error(request, 'Wrong Email')
                     return redirect('Login')
         
     except:
+        messages.error(request, 'something went wrong')
         return redirect('Login')
     
     return render(request, "root/index.html",context =  context)
@@ -128,11 +141,10 @@ def forgot(request):
 
                     recipient_list = [email]
                     send_mail(subject, message, "helpFrom@satyug.edu.in", recipient_list, fail_silently=False, auth_user=None, auth_password=None, connection=None, html_message=None)
-
+                    messages.success(request, 'Otp sent to your email')
                     return redirect('Login')
                 else:
                     teacher = Teacher.objects.get(email = email)
-        
                     if teacher:
                         otp = random.randint(100000,999999)
                         teacher.otp = otp
@@ -142,8 +154,13 @@ def forgot(request):
                         message = f"Your Password reset otp is {otp}"
                         recipient_list = [email]
                         send_mail(subject, message, "helpFrom@satyug.edu.in", recipient_list, fail_silently=False, auth_user=None, auth_password=None, connection=None, html_message=None)
+                        messages.success(request, 'Otp sent to your email')
                         return redirect('Login')
+                    else:
+                        messages.error(request, 'invalid Email')
+                        return redirect('forgot')
             except:
+                messages.error(request, 'something went wrong')
                 return redirect('Login')
             
     return render(request, "root/index.html",context =  context)
