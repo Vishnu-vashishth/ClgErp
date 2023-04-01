@@ -11,3 +11,6 @@ def list(request):
 
 def fetchStudents(request):
     return render(request, 'attendance/fetchStudents.html', {"title":"fetchStudents" })
+
+def show_sub_wise_att(request):
+    return render(request, 'attendance/show_sub_wise_att.html', {"title":"show_sub_wise_att" })
