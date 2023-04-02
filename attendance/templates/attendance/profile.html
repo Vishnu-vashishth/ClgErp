@@ -1,151 +1,88 @@
-
 {% block content %}
-<div class="w-full max-w-2xl mx-auto p-8">
-  <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-    {% csrf_token %}
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="name">
-        Name
-      </label>
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="name"
-        type="text"
-        value="{{ student.name }}"
-        disabled
-      >
-    </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="email">
-        Email
-      </label>
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="email"
-        type="email"
-        value="{{ student.email }}"
-        disabled
-      >
-    </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="password">
-        Password
-      </label>
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="password"
-        type="password"
-        value="{{ student.password }}"
-        disabled
-      >
-    </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="roll">
-        Roll Number
-      </label>
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="roll"
-        type="number"
-        value="{{ student.roll }}"
-        disabled
-      >
-    </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="department">
-        Department
-      </label>
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="department"
-        type="text"
-        value="{{ student.department }}"
-        disabled
-      >
-    </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="current_sem">
-        Current Semester
-      </label>
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="current_sem"
-        type="number"
-        value="{{ student.current_sem }}"
-        disabled
-      >
-    </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="father_name">
-        Father's Name
-      </label>
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="father_name"
-        type="text"
-        value="{{ student.father_name }}"
-        disabled
-      >
-    </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="mother_name">
-        Mother's Name
-      </label>
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="mother_name"
-        type="text"
-        value="{{ student.mother_name }}"
-        disabled
-      >
-    </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="address">
-        Address
-      </label>
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="address"
-        type="text"
-        value="{{ student.address }}"
-        disabled
-      >
-    </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="phone">
-        Phone Number
-      </label>
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="phone"
-        type="number"
-        value="{{ student.phone }}"
-        disabled
-      >
-    </div>
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="dob">
-        Date of Birth
-      </label>
-      <input
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="dob"
-        type="date"
-        value="{{ student.dob }}"
-        disabled
-      >
-    </div>
 
-    <div class="flex items-center justify-between">
-      <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        type="button"
-        onclick="window.location.href=''"
-      >
-        Edit
-      </button>
+
+<style>
+    .gradient-bg {
+        background: linear-gradient(to bottom, #1e90ff, #00bfff);
+        background-size: 400% 400%;
+        animation: gradient 10s ease infinite;
+      }
+      
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+      
+    </style>
+<div class="grid lg:grid-cols-3 grid-cols-1 gap-4">
+
+
+    <div class="lg:col-span-1 mt-8">
+        <div class="w-full rounded-lg overflow-hidden shadow-lg bg-white">
+            <div class="p-4">
+              <img src="https://i.pravatar.cc/300" alt="avatar" class="h-64 w-64 mx-auto rounded-full">
+            </div>
+          </div>
+        </div>
+
+
+
+    <div class="lg:col-span-2">
+     <div class="w-full rounded-lg overflow-hidden shadow-lg bg-white">
+        <div class="flex items-center p-6 border-b gradient-bg">
+            <div>
+              <h1 class="text-2xl font-bold">{{ student.name }}</h1>
+            </div>
+          </div>
+      <div class="p-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="mb-4 flex items-center">
+            <span class="font-semibold  mr-2"><i class="fa fa-envelope  text-orange-500 "></i></span>
+            <span class="font-semibold">Email:</span>
+            <span>{{ student.email }}</span>
+          </div>
+          <div class="mb-4 flex items-center">
+            <span class="font-semibold mr-2"><i class="fa fa-id-card"></i></span>
+            <span>{{ student.roll }}</span>
+          </div>
+          <div class="mb-4 flex items-center">
+            <span class="font-semibold mr-2"><i class="fa fa-graduation-cap"></i></span>
+            <span>{{ student.curent_sem }}</span>
+          </div>
+          <div class="mb-4 flex items-center">
+            <span class="font-semibold mr-2"><i class="fa fa-building"></i></span>
+            <span>{{ student.get_department_display }}</span>
+          </div>
+          <div class="mb-4 flex items-center">
+            <span class="font-semibold mr-2"><i class="fa fa-male"></i></span>
+            <span>{{ student.father_name }}</span>
+          </div>
+          <div class="mb-4 flex items-center">
+            <span class="font-semibold mr-2"><i class="fa fa-female"></i></span>
+            <span>{{ student.mother_name }}</span>
+          </div>
+          <div class="mb-4 flex items-center">
+            <span class="font-semibold mr-2"><i class="fa fa-map-marker"></i></span>
+            <span>{{ student.address }}</span>
+          </div>
+          <div class="mb-4 flex items-center">
+            <span class="font-semibold mr-2"><i class="fa fa-phone"></i></span>
+            <span>{{ student.phone }}</span>
+          </div>
+          <div class="mb-4 flex items-center">
+            <span class="font-semibold mr-2"><i class="fa fa-phone"></i></span>
+            <span>{{ student.father_phone }}</span>
+          </div>
+        </div>
+      </div>
     </div>
-    </form>
+  </div>
 </div>
 {% endblock %}
-
