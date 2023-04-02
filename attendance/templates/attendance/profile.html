@@ -1,0 +1,151 @@
+
+{% block content %}
+<div class="w-full max-w-2xl mx-auto p-8">
+  <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    {% csrf_token %}
+    <div class="mb-4">
+      <label class="block text-gray-700 font-bold mb-2" for="name">
+        Name
+      </label>
+      <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="name"
+        type="text"
+        value="{{ student.name }}"
+        disabled
+      >
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 font-bold mb-2" for="email">
+        Email
+      </label>
+      <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="email"
+        type="email"
+        value="{{ student.email }}"
+        disabled
+      >
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 font-bold mb-2" for="password">
+        Password
+      </label>
+      <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="password"
+        type="password"
+        value="{{ student.password }}"
+        disabled
+      >
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 font-bold mb-2" for="roll">
+        Roll Number
+      </label>
+      <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="roll"
+        type="number"
+        value="{{ student.roll }}"
+        disabled
+      >
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 font-bold mb-2" for="department">
+        Department
+      </label>
+      <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="department"
+        type="text"
+        value="{{ student.department }}"
+        disabled
+      >
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 font-bold mb-2" for="current_sem">
+        Current Semester
+      </label>
+      <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="current_sem"
+        type="number"
+        value="{{ student.current_sem }}"
+        disabled
+      >
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 font-bold mb-2" for="father_name">
+        Father's Name
+      </label>
+      <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="father_name"
+        type="text"
+        value="{{ student.father_name }}"
+        disabled
+      >
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 font-bold mb-2" for="mother_name">
+        Mother's Name
+      </label>
+      <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="mother_name"
+        type="text"
+        value="{{ student.mother_name }}"
+        disabled
+      >
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 font-bold mb-2" for="address">
+        Address
+      </label>
+      <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="address"
+        type="text"
+        value="{{ student.address }}"
+        disabled
+      >
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 font-bold mb-2" for="phone">
+        Phone Number
+      </label>
+      <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="phone"
+        type="number"
+        value="{{ student.phone }}"
+        disabled
+      >
+    </div>
+    <div class="mb-4">
+      <label class="block text-gray-700 font-bold mb-2" for="dob">
+        Date of Birth
+      </label>
+      <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="dob"
+        type="date"
+        value="{{ student.dob }}"
+        disabled
+      >
+    </div>
+
+    <div class="flex items-center justify-between">
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        type="button"
+        onclick="window.location.href=''"
+      >
+        Edit
+      </button>
+    </div>
+    </form>
+</div>
+{% endblock %}
+
