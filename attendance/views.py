@@ -118,7 +118,51 @@ def fetchStudents(request):
 
 
 def show_sub_wise_att(request):
-    context = {
-        "title" :"Subject Wise Attendance"
-    }
-    return render(request, 'attendance/index.html', context)
+     token = request.COOKIES.get('token')
+     if token:
+        try:
+            decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+            if decoded['role'] == 'student':
+                student = Student.objects.get(email=decoded['email'])
+                subjects = Subject.objects.filter(sem=student.curent_sem)
+                context = {
+                         "title":"Subject Wise Attendance",
+                         "role" : "student",
+                         "subjects" : subjects
+                          }
+                
+                if request.method == 'POST':
+                    sub = request.POST.get('subject')
+                    if sub == "all":
+                        attendance = Agg_Attendance.objects.filter(student=student)
+                    else:
+                        sub = Subject.objects.get(name=sub)
+                        attendance = Agg_Attendance.objects.filter(student=student, subject=sub)
+                    context = {
+                         "title":"Subject Wise Attendance",
+                         "role" : "student",
+                         "subjects" : subjects,
+                         "attendance" : attendance
+                          }
+                    return render( request, 'attendance/index.html', context )
+                return render( request, 'attendance/index.html', context )
+
+           
+             
+            else:
+                messages.error(request, 'Invalid Credentials')
+                return redirect('Login')
+
+        except Exception as e:
+            messages.error(request, f'something went wrong{e}')
+            return redirect('Login')
+            
+
+
+     else :
+            messages.error(request, 'Please Login First')
+            return redirect('Login')
+
+
+
+
