@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.hashers import make_password
-# Create your models here.
+
+
+
+
+
 class Student (models.Model):
     name = models.CharField(max_length=100)
     DEPARTMENT_CHOICES = [
@@ -35,6 +39,7 @@ class Student (models.Model):
     
     def save(self,*args, **kwargs):
         self.password = make_password(self.password)
+        super(Student,self).save(*args, **kwargs)
     
     def increaseSem(self):
         self.curent_sem = self.curent_sem + 1
@@ -105,6 +110,8 @@ class Agg_Attendance(models.Model):
   
     def __str__(self):
         return self.student.name 
+    
+
     
 
 class Datewise_Attendance (models.Model):

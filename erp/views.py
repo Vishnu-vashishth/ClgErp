@@ -27,11 +27,11 @@ def login(request):
     if token:
             try:  
                 decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
-                student = Student.objects.get(email = decoded)
+                student = Student.objects.get(email = decoded['email'])
                 if student:
                     return redirect('attendance')
                 else:
-                    teacher = Teacher.objects.get(eamil = decoded)
+                    teacher = Teacher.objects.get(eamil = decoded['email'])
                     if teacher: 
                       return redirect('attendance')
             except:
@@ -45,7 +45,7 @@ def login(request):
             try :
                 student = Student.objects.get(email = email)
                 if check_password(password,student.password):
-                    encode = jwt.encode({'email': email}, settings.SECRET_KEY, algorithm='HS256')
+                    encode = jwt.encode({'email': email,'role':role}, settings.SECRET_KEY, algorithm='HS256')
                     response = redirect('attendance')
                     response.set_cookie('token', encode)
                     messages.success(request, 'Login Successfully')
@@ -61,7 +61,7 @@ def login(request):
             try :
                 teacher = Teacher.objects.get(email = email)
                 if check_password(password,teacher.password):
-                    encode = jwt.encode({'email': email}, settings.SECRET_KEY, algorithm='HS256')
+                    encode = jwt.encode({'email': email,'role':role}, settings.SECRET_KEY, algorithm='HS256')
                     response = redirect('attendance')
                     response.set_cookie('token', encode)
                     messages.success(request, 'Login Successfully')
