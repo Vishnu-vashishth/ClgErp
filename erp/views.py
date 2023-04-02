@@ -41,9 +41,12 @@ def login(request):
         email = request.POST["email"]
         password = request.POST["password"]
         role = request.POST["role"]
+        print(email,password,role)
         if role == "student":
+            print(email,password,role)
             try :
                 student = Student.objects.get(email = email)
+                print(student)
                 if check_password(password,student.password):
                     encode = jwt.encode({'email': email,'role':role}, settings.SECRET_KEY, algorithm='HS256')
                     response = redirect('attendance')
@@ -53,8 +56,8 @@ def login(request):
                 else:
                     messages.error(request, 'Invalid Credentials')
                     return redirect('Login')
-            except:
-                messages.error(request, 'something went wrong')
+            except Exception as e:
+                messages.error(request, f'something went wrong{e}')
                 return redirect('Login')
             
         elif role == "teacher":
