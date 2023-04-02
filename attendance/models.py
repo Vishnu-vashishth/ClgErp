@@ -33,13 +33,13 @@ class Student (models.Model):
     address = models.CharField(max_length=150)
     phone = models.CharField(max_length=100)
     father_phone = models.CharField(max_length=100)
-    otp = models.IntegerField(default=None,null=True)
+    otp = models.CharField(max_length=6,default=None,null=True,blank=True)
     def __str__(self):
         return self.name
     
     def save(self,*args, **kwargs):
         self.password = make_password(self.password)
-        super(Student,self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
     
     def increaseSem(self):
         self.curent_sem = self.curent_sem + 1
@@ -51,7 +51,7 @@ class Teacher(models.Model):
     email = models.EmailField(max_length=100)
     password = models.CharField(max_length=100)
     phone = models.CharField(max_length=100)
-    otp = models.IntegerField(default=None,null=True)
+    otp = models.CharField(max_length=6,default=None,null=True,blank=True)
 
     def __str__(self):
         return self.name

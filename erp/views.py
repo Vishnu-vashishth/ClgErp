@@ -26,15 +26,21 @@ def login(request):
     token = request.COOKIES.get('token')
     if token:
             try:  
-                decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
-                student = Student.objects.get(email = decoded['email'])
-                if student:
-                    return redirect('attendance')
+                decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+                if decoded['role'] == 'student':
+                   student = Student.objects.get(email=decoded['email'])
+                   messages.success(request, 'Login Successfully')
+                   return redirect('attendance')
+                elif decoded['role'] == 'teacher':
+                     teacher = Teacher.objects.get(email=decoded['email'])
+                     messages.success(request, 'Login Successfully')
+                     return redirect('attendance')
                 else:
-                    teacher = Teacher.objects.get(eamil = decoded['email'])
-                    if teacher: 
-                      return redirect('attendance')
-            except:
+                      messages.error(request, 'Invalid Credentials')
+                      return redirect('Login')
+
+            except Exception as e:
+                messages.error(request, f'something went wrong{e}')
                 pass
 
     if request.method == 'POST':
@@ -46,9 +52,10 @@ def login(request):
             print(email,password,role)
             try :
                 student = Student.objects.get(email = email)
-                print(student)
+                print(student.password)
                 if check_password(password,student.password):
-                    encode = jwt.encode({'email': email,'role':role}, settings.SECRET_KEY, algorithm='HS256')
+                    
+                    encode = jwt.encode({'email': email,'role':role}, settings.JWT_SECRET_KEY, algorithm='HS256')
                     response = redirect('attendance')
                     response.set_cookie('token', encode)
                     messages.success(request, 'Login Successfully')
@@ -64,7 +71,7 @@ def login(request):
             try :
                 teacher = Teacher.objects.get(email = email)
                 if check_password(password,teacher.password):
-                    encode = jwt.encode({'email': email,'role':role}, settings.SECRET_KEY, algorithm='HS256')
+                    encode = jwt.encode({'email': email,'role':role}, settings.JWT_SECRET_KEY, algorithm='HS256')
                     response = redirect('attendance')
                     response.set_cookie('token', encode)
                     messages.success(request, 'Login Successfully')
@@ -92,7 +99,7 @@ def reset(request):
             password = request.POST["password"]
             student = Student.objects.get(email = email)
             if student:
-                if otp == student.otp and otp != None :
+                if otp == student.otp and otp != '000000' :
                     student.password = password
                     student.otp = None
                     student.save()

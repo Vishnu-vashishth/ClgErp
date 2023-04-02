@@ -1,5 +1,5 @@
 {% extends 'attendance/base.html' %}
-
+{% load static %}
 
 {% block title  %}{{title}} {% endblock %}
 
@@ -45,7 +45,7 @@
 {%endblock%}
 
 
-
+{% block content %}
 
 {% if title %}
 
@@ -58,6 +58,10 @@
 {% elif title == 'Subject Wise Attendance' %}
 {% include 'attendance/show_sub_wise_att.html' %}
 
+{% elif title == 'List' %}
+{% include 'attendance/studentList.html' %}
 
 {% endif %}
 {% endif %}
+
+{% endblock content %}
