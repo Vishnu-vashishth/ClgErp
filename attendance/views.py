@@ -59,16 +59,39 @@ def index(request):
 
 
 def profile(request):
-    check_login(request)
-    decoded = decode_token(request)
-    email = decoded['email']
-    role = decoded['role']
-    context = {
-        "title" : "Profile",
-        "email" : email,
-        "role" : role
-    }
-    return render( request, 'attendance/index.html', context )
+     token = request.COOKIES.get('token')
+     if token:
+        try:
+            decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+            if decoded['role'] == 'student':
+                student = Student.objects.get(email=decoded['email'])
+                context = {
+                         "title":"Profile",
+                         "student" : student
+                          }
+                return render( request, 'attendance/index.html', context )
+
+            elif decoded['role'] == 'teacher':
+                teacher = Teacher.objects.get(email=decoded['email'])
+                context = {
+                            "title":"Profile",
+                            "teacher" : teacher
+                            }
+                return render( request, 'attendance/index.html', context )
+             
+            else:
+                messages.error(request, 'Invalid Credentials')
+                return redirect('Login')
+
+        except Exception as e:
+            messages.error(request, f'something went wrong{e}')
+            return redirect('Login')
+            
+
+
+     else :
+            messages.error(request, 'Please Login First')
+            return redirect('Login')
 
 
 
