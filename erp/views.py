@@ -41,7 +41,7 @@ def login(request):
         email = request.POST["email"]
         password = request.POST["password"]
         role = request.POST["role"]
-        print(email,password,role)
+        
         if role == "student":
             print(email,password,role)
             try :
@@ -77,7 +77,7 @@ def login(request):
                 messages.error(request, 'something went wrong')
                 return redirect('Login')
 
-    return render(request, "root/index.html",context =  context)
+    return render(request, "root/index.html", context =  context)
 
 
 
@@ -145,7 +145,7 @@ def forgot(request):
                     recipient_list = [email]
                     send_mail(subject, message, "helpFrom@satyug.edu.in", recipient_list, fail_silently=False, auth_user=None, auth_password=None, connection=None, html_message=None)
                     messages.success(request, 'Otp sent to your email')
-                    return redirect('Login')
+                    return redirect('Reset')
                 else:
                     teacher = Teacher.objects.get(email = email)
                     if teacher:
@@ -158,18 +158,18 @@ def forgot(request):
                         recipient_list = [email]
                         send_mail(subject, message, "helpFrom@satyug.edu.in", recipient_list, fail_silently=False, auth_user=None, auth_password=None, connection=None, html_message=None)
                         messages.success(request, 'Otp sent to your email')
-                        return redirect('Login')
+                        return redirect('Reset')
                     else:
                         messages.error(request, 'invalid Email')
-                        return redirect('forgot')
-            except:
-                messages.error(request, 'something went wrong')
+                        return redirect('Forgot')
+            except Exception as e:
+                messages.error(request, f'something went wrong {e}')
                 return redirect('Login')
             
     return render(request, "root/index.html",context =  context)
 
 
 def logout(request):
-    response = redirect('Login')
+    response = redirect('Home')
     response.delete_cookie('token')
     return response
