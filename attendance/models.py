@@ -59,7 +59,7 @@ class Teacher(models.Model):
     def save(self,*args, **kwargs):
         self.password = make_password(self.password)
         super(Teacher,self).save(*args, **kwargs)
-
+ 
 
 class Subject(models.Model):
     name = models.CharField(max_length=100)

@@ -1,1 +1,18 @@
+{% load static %}
 
+{% block content %}
+<div class="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-6 flex flex-col items-center">
+    <div class="h-32 w-32 mb-4">
+        <img src="https://i.pravatar.cc/300" alt="Avatar" class="w-full h-full rounded-full">
+    </div>
+    <h1 class="text-4xl font-bold mb-4 text-gray-900">Welcome, {{ student.name }}!</h1>
+    <p class="mb-4 text-gray-700 text-lg">We're thrilled to have you join us today. Our team has been working hard to create an amazing learning experience just for you.</p>
+    <p class="mb-4 text-gray-700 text-lg">During your time with us, you'll have access to a wealth of knowledge and resources that will help you achieve your goals and reach new heights.</p>
+    <div class="flex space-x-4">
+        <img src="https://i.pravatar.cc/40" alt="Avatar" class="w-10 h-10 rounded-full">
+        <img src="https://i.pravatar.cc/40?img=3" alt="Avatar" class="w-10 h-10 rounded-full">
+        <img src="https://i.pravatar.cc/40?img=5" alt="Avatar" class="w-10 h-10 rounded-full">
+        <img src="https://i.pravatar.cc/40?img=7" alt="Avatar" class="w-10 h-10 rounded-full">
+    </div>
+</div>
+{% endblock %}
