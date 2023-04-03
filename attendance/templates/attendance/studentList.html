@@ -1,21 +1,23 @@
 
-
 {% load static %}
 
-{% block content %}
+
+
+
+
+{% if students %} 
 
 <div class=" flex items-center justify-center pb-4 bg-white dark:bg-gray-900">   
 
     <div >
-
-        <label for="subjects" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Subject For Attendance</label>
-         <select id="subject" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg md:w-80 w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option selected>Choose an option</option>
-            <option value="DM">Dm</option>
-            <option value="COA">COA</option>
-            <option value="FR">France</option>
-            <option value="DE">Germany</option>
+        <label for="subject" class="block font-medium text-gray-700 mb-2">Select Subject to mark attendance:</label>
+        <select name="subject" id="subject" name= "subject" class="block w-full bg-white border border-gray-300 px-4 py-2 pr-8 rounded shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            
+            {% for subject in subjects %}
+                <option value="{{ subject }}">{{ subject }}</option>
+            {% endfor %}
         </select>
+               
     </div>
 </div>
 
@@ -51,14 +53,18 @@
 
 
         <tbody class = "shadow-md sm:rounded-lg">
+
+            <form action ="" method = "POST">
+            {% for student in students%}
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                
                 <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
                     <img class="w-10 h-10 rounded-full" src="{% static 'img/logo.png' %}" alt="Jese image">
                     <div class="pl-3">
-                        <div class="text-base font-semibold">Vishnu vashishth</div>
-                        <div class="font-normal text-gray-500">20020004114</div>
-                        <div class="font-normal text-gray-500">cse-6B</div>
+                        <div class="text-base font-semibold">{{student.name}}</div>
+                        <span class="font-normal text-gray-500">roll-{{student.roll}}</span>
+                        <span class="font-normal text-gray-500">sem-{{student.curent_sem}}</span>
+                        <span class="font-normal text-gray-500">sec-{{student.section}}</span>
+                        
                     </div>  
                 </th>
                 
@@ -67,12 +73,16 @@
                     <label class="relative inline-flex items-center mr-5 cursor-pointer">
                         <input type="checkbox" value="" class="sr-only peer" checked>
                         <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
-                        <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Green</span>
+                        <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Present</span>
                       </label>   
                 </td>
             </tr>
+          {% endfor %}
+
+
         </tbody>
-        
+    </form>
+
     </table>
 
-{% endblock content %}
+{% endif %}

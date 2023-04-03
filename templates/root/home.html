@@ -1,4 +1,5 @@
 {% load static %}
+
 <style>
   @keyframes change-gradient {
     0% {
@@ -64,13 +65,14 @@
     }
     .gradienttextDiv h1 {
       font-size: 4rem; /* Change this value to your desired font size */
-      line-height: 0.9; /* Add a line-height property to the h1 elements *
+      line-height: 0.9; 
     }
   }
   
 </style>
 
-<div class="bg-white w-full h-50">
+<div class="bg-white w-full h-50 mt-[20px]">
+
   <div class="w-full gradienttextDiv flex items-center justify-center">
     <span>
       <h1 class="text-4xl md:text-9xl font-extrabold animate-gradient-1 transition duration-500 ease-in-out">Read.</h1>
@@ -81,13 +83,13 @@
     <span>
       <h1 class="text-4xl md:text-9xl font-extrabold transition duration-500 ease-in-out">Learn.</h1>
     </span>
+
   </div>
   
-  
-<section class="bg-white dark:bg-gray-900">
+  <section class="bg-white dark:bg-gray-900 ">
   <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
-      <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl dark:text-white">We invest in the world’s potential</h1>
-      <p class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">Here at Flowbite we focus on markets where technology, innovation, and capital can unlock long-term value and drive economic growth.</p>
+      <h2 class="text-3xl font-bold text-black-900 dark:text-white sm:text-4xl">We're here to help you grow your business</h2>
+      <p class="mb-8 text-lg font-normal text-black-500 lg:text-xl sm:px-16 lg:px-48 dark:text-gray-400">Here   we focus on markets where technology, innovation, and capital can unlock long-term value and drive economic growth.</p>
       <div class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
           <a href="#" class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900">
               Get started
@@ -100,43 +102,9 @@
   </div>
 </section>
 
-    <video src="{% static 'img/video1.mp4'%}" class="w-full h-auto" loop autoplay muted></video>
+
+    {% comment %} <video src="{% static 'img/video1.mp4'%}" class="w-full h-[50vh] " loop autoplay muted></video> {% endcomment %}
   
-    <div class="bg-white rounded-lg overflow-hidden shadow-md">
-      <div class="bg-gray-800 px-4 py-3">
-        <h3 class="text-lg font-medium text-white">
-          Notice Board
-        </h3>
-      </div>
-      <div class="border-t border-gray-200">
-        <dl>
-          <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">
-              Title
-            </dt>
-            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed justo mi. 
-            </dd>
-          </div>
-          <div class="bg-gray-100 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">
-              Title
-            </dt>
-            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed justo mi. 
-            </dd>
-          </div>
-          <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-            <dt class="text-sm font-medium text-gray-500">
-              Title
-            </dt>
-            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed justo mi. 
-            </dd>
-          </div>
-        </dl>
-      </div>
-    </div>
     
 
 

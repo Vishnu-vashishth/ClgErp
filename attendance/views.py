@@ -29,7 +29,8 @@ def index(request):
                 student = Student.objects.get(email=decoded['email'])
                 context = {
                          "title":"Dashboard",
-                         "role" : student
+                         "role" : "student",
+                         "student":student
                           }
                 return render( request, 'attendance/index.html', context )
 
@@ -37,7 +38,8 @@ def index(request):
                 teacher = Teacher.objects.get(email=decoded['email'])
                 context = {
                             "title":"Dashboard",
-                            "role" : teacher
+                            "role" : "teacher",
+                            "teacher": teacher
                             }
                 return render( request, 'attendance/index.html', context )
              
@@ -111,9 +113,13 @@ def list(request):
 
 def fetchStudents(request):
     context = {
-        "title" :"Fetch Students"
+        "title" :"Fetch Students",
+        
     }
     return render(request, 'attendance/index.html', context)
+
+
+
 
 
 
@@ -128,6 +134,7 @@ def show_sub_wise_att(request):
                 context = {
                          "title":"Subject Wise Attendance",
                          "role" : "student",
+                         "student":student,
                          "subjects" : subjects
                           }
                 
@@ -141,6 +148,7 @@ def show_sub_wise_att(request):
                     context = {
                          "title":"Subject Wise Attendance",
                          "role" : "student",
+                         "student" : student,
                          "subjects" : subjects,
                          "attendance" : attendance
                           }
@@ -188,3 +196,62 @@ def show_sub_wise_att(request):
 
 
 
+
+def markAttendance(request ) :
+    token = request.COOKIES.get('token')
+    if token:
+        try:
+            decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+            if decoded['role'] == 'teacher':
+                teacher = Teacher.objects.get(email=decoded['email'])
+                if request.method == 'POST':
+                      department = request.POST.get('department')
+                      semester = request.POST.get('semester')
+                      section = request.POST.get('section')
+                    #   students = Student.objects.filter(department=department,section=section, curent_sem=semester)
+                      students = Student.objects.filter(department=department, curent_sem=semester)
+                      subjects = Subject.objects.filter(sem=semester)
+                      context = {
+                            "title":"Mark Attendance",
+                            "teacher" : teacher,
+                            "students" : students,
+                            "subjects" : subjects,
+                            "departments" : Student.DEPARTMENT_CHOICES,
+                            "semester" : Student.SEM_CHOICES,
+
+                            }
+                      return render( request, 'attendance/index.html', context )
+                
+                else:
+                        
+                        context = {
+                                "title":"Mark Attendance",
+                                "teacher" : teacher,
+                                "departments" : Student.DEPARTMENT_CHOICES,
+                                "semester" : Student.SEM_CHOICES,
+                                }
+                        
+                        return render( request, 'attendance/index.html', context )
+
+                    
+            
+            else:
+                messages.error(request, 'Invalid Credentials')
+                return redirect('Login')
+        
+        except Exception as e:
+            messages.error(request, f'something went wrong{e}')
+            return redirect('Login')
+
+
+    else :
+            messages.error(request, 'Please Login First')
+            return redirect('Login')
+    
+
+
+
+
+# context = {
+#         "title" : "Mark Attendance"
+#     }
