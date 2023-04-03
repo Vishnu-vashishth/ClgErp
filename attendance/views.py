@@ -29,7 +29,7 @@ def index(request):
                 student = Student.objects.get(email=decoded['email'])
                 context = {
                          "title":"Dashboard",
-                         "student" : student
+                         "role" : student
                           }
                 return render( request, 'attendance/index.html', context )
 
@@ -37,7 +37,7 @@ def index(request):
                 teacher = Teacher.objects.get(email=decoded['email'])
                 context = {
                             "title":"Dashboard",
-                            "teacher" : teacher
+                            "role" : teacher
                             }
                 return render( request, 'attendance/index.html', context )
              
@@ -146,6 +146,28 @@ def show_sub_wise_att(request):
                           }
                     return render( request, 'attendance/index.html', context )
                 return render( request, 'attendance/index.html', context )
+            
+            elif decoded['role'] == 'teacher':
+                departments=Student.DEPARTMENT_CHOICES
+                semester=Student.SEM_CHOICES
+                context={
+                    'title':'list',
+                    'department':departments,
+                    'semester':semester
+                }
+
+                if request.method== 'GET':
+                    depart= request.GET.get('department')
+                    sem=request.GET.get('semester')
+                    
+
+
+
+
+
+                return render( request,'attendance/index.html',context)
+
+                
 
            
              

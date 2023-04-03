@@ -32,11 +32,11 @@
             </tr>
         </thead>
         <tbody>
-            {% for attendance in attendances %}
+            {% for attendances in attendance %}
                 <tr>
-                    <td class="border px-4 py-2">{{ attendance.subject }}</td>
-                    <td class="border px-4 py-2">{{ attendance.attended_classes }}</td>
-                    <td class="border px-4 py-2">{{ attendance.total_classes }}</td>
+                    <td class="border px-4 py-2">{{ attendances.subject }}</td>
+                    <td class="border px-4 py-2">{{ attendances.attended_classes }}</td>
+                    <td class="border px-4 py-2">{{ attendances.total_classes }}</td>
                 </tr>
             {% endfor %}
         </tbody>
