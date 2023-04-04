@@ -27,7 +27,7 @@ class Student (models.Model):
     password = models.CharField(max_length=100)
     roll = models.IntegerField()
     section = models.CharField(max_length=1,default='A', choices=[('A','A'),('B','B'),('C','C')])
-    session = models.CharField(max_length=4)                           
+    session = models.CharField(max_length=4, default=None)                           
     curent_sem = models.IntegerField(default =1,choices=SEM_CHOICES)
     department = models.CharField(max_length=3, choices=DEPARTMENT_CHOICES)
     father_name = models.CharField(max_length=100)
