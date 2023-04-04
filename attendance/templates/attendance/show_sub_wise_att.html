@@ -14,10 +14,12 @@
             </select>
         </div>
         <div class="text-center">
-            <div id="spinner" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 opacity-50 z-50">
+            <div id="spinner" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 opacity-90 z-50">
                 <div class="flex justify-center items-center h-full">
-                  <i class="fa fa-spinner fa-spin text-white text-5xl"></i>
-                </div>
+                   <i class="fa fa-spinner fa-spin text-white text-5xl"></i> 
+                   
+                    {% comment %} <img src="{% static 'img/ghost.gif' %}" alt="spinner" class="h-20 w-20"> {% endcomment %}
+                  </div>
               </div>
             <button type="submit" class="px-4 py-2 font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">View Attendance</button>
         </div>

@@ -4,7 +4,8 @@ import jwt
 from django.contrib import messages
 from django.conf import settings
 from .models import *
-from datetime import datetime
+from datetime import datetime,timedelta
+from datetime import date
 # Create your views here.
 
 
@@ -239,8 +240,8 @@ def markAttendance(request ) :
 
 
 def saveAttendance(request):
-    current_year = datetime.now().year
-    YEAR_CHOICES = [year for year in range(current_year-5, current_year+1)]
+    # current_year = datetime.now().year
+    # YEAR_CHOICES = [year for year in range(current_year-5, current_year+1)]
     token = request.COOKIES.get('token')
     if token:
 
@@ -251,6 +252,8 @@ def saveAttendance(request):
                     try:
                         selected_subject = request.POST.get('subject')
                         students_present = request.POST.getlist('attendance[]')
+                        date_str = request.POST.get('current_date')
+                        date_obj = date.fromisoformat(date_str)
                         subject = Subject.objects.get(name=selected_subject)
                         
                         # Get the session value from any of the students present in the list
@@ -270,6 +273,10 @@ def saveAttendance(request):
                             attendance.status = 'P'
                             attendance.save()
 
+
+                            datewise_attendance, created = Datewise_Attendance.objects.get_or_create(student=student, date=date_obj)
+                            datewise_attendance.present_in.add(subject)
+
                         messages.success(request, 'Attendance submitted successfully.')
                         return redirect('markAttendance')
                     except Subject.DoesNotExist:
@@ -281,3 +288,56 @@ def saveAttendance(request):
                         
     messages.success(request, 'Attendance submitted successfully.')
     return redirect('markAttendance')
+
+
+
+def view_date_wise_attendance(request):
+    token = request.COOKIES.get('token')
+    if token:
+        try:
+            decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+            if decoded['role'] == 'student':
+                student = Student.objects.get(email=decoded['email'])
+
+                if request.method == 'POST':
+                    start_date = request.POST.get('start_date')
+                    end_date = request.POST.get('end_date')
+
+                    start = datetime.strptime(start_date, '%m/%d/%Y')
+                    end = datetime.strptime(end_date, '%m/%d/%Y')
+
+                    delta = timedelta(days=1)
+                    dates = []
+                    while start <= end:
+                            dates.append(start)
+                            start += delta
+
+                    attendance_data = []
+                    for date in dates:
+                        attendance = Datewise_Attendance.objects.prefetch_related('present_in').filter(date=date,student= student).values_list('present_in__name', flat=True)
+                        attendance_data.append({'date': date, 'subjectList': list(attendance)})
+
+
+                    context = {'attendance_data': attendance_data}
+                    return render(request, 'attendance/index.html', context)
+
+                else:
+                    context = {
+                        'title': 'View Attendance',
+                        'student': student
+
+                    }
+                    return render(request, 'attendance/index.html', context)
+            
+             
+            else:
+                messages.error(request, 'Invalid Credentials')
+                return redirect('Login')
+
+        except Exception as e:
+            messages.error(request, f'something went wrong{e}')
+            return redirect('Login')
+            
+    else :
+            messages.error(request, 'Please Login First')
+            return redirect('Login')

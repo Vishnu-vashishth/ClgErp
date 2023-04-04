@@ -83,8 +83,19 @@
         </tbody>
         
     </table>
+    <input type="hidden" id="current_date" name="current_date" value="">
+    <div id="spinner" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 opacity-90 z-50">
+        <div class="flex justify-center items-center h-full">
+           <i class="fa fa-spinner fa-spin text-white text-5xl"></i> 
+           
+            {% comment %} <img src="{% static 'img/ghost.gif' %}" alt="spinner" class="h-20 w-20"> {% endcomment %}
+          </div>
+      </div>
     <button type="submit" class="p-8 md:ml-[60%]inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue disabled:opacity-25 transition ease-in-out duration-150 mt-4">Save Attendance</button>
 
 </form>
+
+
+
 
 {% endif %}

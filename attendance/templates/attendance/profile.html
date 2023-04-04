@@ -33,11 +33,12 @@
         </div>
 
 
-
+{% if student %}
     <div class="lg:col-span-2">
      <div class="w-full rounded-lg overflow-hidden shadow-lg bg-white">
         <div class="flex items-center p-6 border-b gradient-bg">
             <div>
+    
               <h1 class="text-2xl font-bold">{{ student.name }}</h1>
             </div>
           </div>
@@ -85,4 +86,42 @@
     </div>
   </div>
 </div>
+
+{% elif teacher%}
+<div class="lg:col-span-2">
+  <div class="w-full rounded-lg overflow-hidden shadow-lg bg-white">
+     <div class="flex items-center p-6 border-b gradient-bg">
+         <div>
+ 
+           <h1 class="text-2xl font-bold">{{ teacher.name }}</h1>
+         </div>
+       </div>
+   <div class="p-6">
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+       <div class="mb-4 flex items-center">
+         <span class="font-semibold  mr-2"><i class="fa fa-envelope  text-orange-500 "></i></span>
+         <span class="font-semibold">Email:</span>
+         <span>{{ teacher.email }}</span>
+       </div>
+
+       <div class="mb-4 flex items-center">
+         <span class="font-semibold  mr-2"><i class="fa fa-envelope  text-orange-500 "></i></span>
+         <span class="font-semibold">Phone:</span>
+         <span>{{ teacher.phone }}</span>
+       </div>
+       
+       
+      
+        
+      
+       
+     </div>
+   </div>
+ </div>
+</div>
+
+
+{% endif%}
+
+
 {% endblock %}
