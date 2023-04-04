@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 import jwt
 from django.contrib import messages
 from django.conf import settings
@@ -208,8 +209,8 @@ def markAttendance(request ) :
                       department = request.POST.get('department')
                       semester = request.POST.get('semester')
                       section = request.POST.get('section')
-                    #   students = Student.objects.filter(department=department,section=section, curent_sem=semester)
-                      students = Student.objects.filter(department=department, curent_sem=semester)
+                      students = Student.objects.filter(department=department,section=section, curent_sem=semester)
+                    #   students = Student.objects.filter(department=department, curent_sem=semester)
                       subjects = Subject.objects.filter(sem=semester)
                       context = {
                             "title":"Mark Attendance",
@@ -251,7 +252,59 @@ def markAttendance(request ) :
 
 
 
+# def submit_attendance(request):
+#     if request.method == 'POST':
+#         students = request.POST.getlist('student')
+#         subject_id = request.POST['subject']
+#         for student_id in students:
+#             status = request.POST.get(f'status-{student_id}')
+#             if status == '1':
+#                 attendance, created = Agg_Attendance.objects.get_or_create(
+#                     student_id=student_id,
+#                     subject_id=subject_id,
+#                 )
+#                 attendance.attended_classes += 1
+#                 attendance.total_classes += 1
+#                 attendance.status = '1'
+#                 attendance.save()
+#             else:
+#                 attendance, created = Agg_Attendance.objects.get_or_create(
+#                     student_id=student_id,
+#                     subject_id=subject_id,
+#                 )
+#                 attendance.total_classes += 1
+#                 attendance.status = '0'
+#                 attendance.save()
+#         messages.success(request, 'Attendance Taken Successfully!')
+#         return redirect('attendance_home')
+#     else:
+#         students = Student.objects.all()
+#         subjects = Subject.objects.all()
+#         context = {'students': students, 'subjects': subjects}
+#         return render(request, 'attendance/take_attendance.html', context)
 
-# context = {
-#         "title" : "Mark Attendance"
-#     }
+def saveAttendance(request):
+    if request.method == 'POST':
+        selected_subject = request.POST.get('subject')
+        students_present = request.POST.getlist('attendance[]')
+        subject = Subject.objects.get(name=selected_subject)
+        
+        # Get the session value from any of the students present in the list
+        student_id = students_present[0] # get the first student ID
+        student = Student.objects.get(id=student_id)
+        session = student.session
+
+        total_attendance_obj, created = total_attendance.objects.get_or_create(subject=subject, session=session)
+        total_attendance_obj.total_classes += 1
+        total_attendance_obj.save()
+
+        for student_id in students_present:
+            student = Student.objects.get(id=student_id)
+            attendance, created = Agg_Attendance.objects.get_or_create(student=student, subject=subject)
+            attendance.attended_classes += 1
+            attendance.save()
+
+        messages.success(request, 'Attendance submitted successfully.')
+        return redirect('markAttendance')
+
+

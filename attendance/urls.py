@@ -7,4 +7,5 @@ urlpatterns = [
     
     path('show_sub_wise_att/', views.show_sub_wise_att, name='show_sub_wise_att'),
     path('markAttendance/', views.markAttendance, name='markAttendance'),
+    path('saveAttendance/', views.saveAttendance, name='saveAttendance'),
 ]

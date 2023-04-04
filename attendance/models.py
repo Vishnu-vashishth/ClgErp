@@ -26,6 +26,8 @@ class Student (models.Model):
     email = models.EmailField(max_length=100)
     password = models.CharField(max_length=100)
     roll = models.IntegerField()
+    section = models.CharField(max_length=1,default='A', choices=[('A','A'),('B','B'),('C','C')])
+    session = models.CharField(max_length=4)                           
     curent_sem = models.IntegerField(default =1,choices=SEM_CHOICES)
     department = models.CharField(max_length=3, choices=DEPARTMENT_CHOICES)
     father_name = models.CharField(max_length=100)
@@ -93,25 +95,35 @@ class Subject(models.Model):
 
 class Agg_Attendance(models.Model):
     ATTENDANCE_STATUS = (
-        ('1', 'Present'),
-        ('0', 'Absent'),
+        ('P', 'P'),
+        ('A', 'A'),
     )
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     attended_classes = models.IntegerField(default=0)
     total_classes = models.IntegerField(default=0)
-    status = models.CharField(max_length=1, choices=ATTENDANCE_STATUS)
+    status = models.CharField(max_length=1,default='A', choices=ATTENDANCE_STATUS)
 
-    def save(self, *args, **kwargs):
-        self.total_classes = self.total_classes + 1
-        if self.status == '1':
-            self.attended_classes = self.attended_classes + 1
-        super(Agg_Attendance, self).save(*args, **kwargs)
+    def save(self,*args, **kwargs):
+         
+         self.total_classes = total_attendance.objects.get(subject=self.subject).total_classes
+         super().save(*args, **kwargs)
+
   
     def __str__(self):
         return self.student.name 
     
+class total_attendance(models.Model):
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    total_classes = models.IntegerField(default=0)
+    session = models.CharField(max_length=4)
 
+    def save(self,*args, **kwargs):
+        self.total_classes = self.total_classes + 1
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.student.name
     
 
 class Datewise_Attendance (models.Model):
