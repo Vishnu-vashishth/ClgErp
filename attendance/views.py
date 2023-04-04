@@ -4,6 +4,7 @@ import jwt
 from django.contrib import messages
 from django.conf import settings
 from .models import *
+from datetime import datetime
 # Create your views here.
 
 
@@ -156,29 +157,6 @@ def show_sub_wise_att(request):
                     return render( request, 'attendance/index.html', context )
                 return render( request, 'attendance/index.html', context )
             
-            elif decoded['role'] == 'teacher':
-                departments=Student.DEPARTMENT_CHOICES
-                semester=Student.SEM_CHOICES
-                context={
-                    'title':'list',
-                    'department':departments,
-                    'semester':semester
-                }
-
-                if request.method== 'GET':
-                    depart= request.GET.get('department')
-                    sem=request.GET.get('semester')
-                    
-
-
-
-
-
-                return render( request,'attendance/index.html',context)
-
-                
-
-           
              
             else:
                 messages.error(request, 'Invalid Credentials')
@@ -188,8 +166,6 @@ def show_sub_wise_att(request):
             messages.error(request, f'something went wrong{e}')
             return redirect('Login')
             
-
-
      else :
             messages.error(request, 'Please Login First')
             return redirect('Login')
@@ -203,13 +179,16 @@ def markAttendance(request ) :
     if token:
         try:
             decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+            current_year = datetime.now().year
+            YEAR_CHOICES = [year for year in range(current_year-5, current_year+1)]
             if decoded['role'] == 'teacher':
                 teacher = Teacher.objects.get(email=decoded['email'])
                 if request.method == 'POST':
                       department = request.POST.get('department')
                       semester = request.POST.get('semester')
                       section = request.POST.get('section')
-                      students = Student.objects.filter(department=department,section=section, curent_sem=semester)
+                      session = request.POST.get('session')
+                      students = Student.objects.filter(department=department,section=section, curent_sem=semester, session=session)
                     #   students = Student.objects.filter(department=department, curent_sem=semester)
                       subjects = Subject.objects.filter(sem=semester)
                       context = {
@@ -219,17 +198,22 @@ def markAttendance(request ) :
                             "subjects" : subjects,
                             "departments" : Student.DEPARTMENT_CHOICES,
                             "semester" : Student.SEM_CHOICES,
+                            "session" : YEAR_CHOICES
 
                             }
                       return render( request, 'attendance/index.html', context )
                 
                 else:
+                       
+
+                        
                         
                         context = {
                                 "title":"Mark Attendance",
                                 "teacher" : teacher,
                                 "departments" : Student.DEPARTMENT_CHOICES,
                                 "semester" : Student.SEM_CHOICES,
+                                "session" : YEAR_CHOICES
                                 }
                         
                         return render( request, 'attendance/index.html', context )
@@ -252,36 +236,7 @@ def markAttendance(request ) :
 
 
 
-# def submit_attendance(request):
-#     if request.method == 'POST':
-#         students = request.POST.getlist('student')
-#         subject_id = request.POST['subject']
-#         for student_id in students:
-#             status = request.POST.get(f'status-{student_id}')
-#             if status == '1':
-#                 attendance, created = Agg_Attendance.objects.get_or_create(
-#                     student_id=student_id,
-#                     subject_id=subject_id,
-#                 )
-#                 attendance.attended_classes += 1
-#                 attendance.total_classes += 1
-#                 attendance.status = '1'
-#                 attendance.save()
-#             else:
-#                 attendance, created = Agg_Attendance.objects.get_or_create(
-#                     student_id=student_id,
-#                     subject_id=subject_id,
-#                 )
-#                 attendance.total_classes += 1
-#                 attendance.status = '0'
-#                 attendance.save()
-#         messages.success(request, 'Attendance Taken Successfully!')
-#         return redirect('attendance_home')
-#     else:
-#         students = Student.objects.all()
-#         subjects = Subject.objects.all()
-#         context = {'students': students, 'subjects': subjects}
-#         return render(request, 'attendance/take_attendance.html', context)
+
 
 def saveAttendance(request):
     if request.method == 'POST':
