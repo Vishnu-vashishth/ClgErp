@@ -240,26 +240,33 @@ def markAttendance(request ) :
 
 def saveAttendance(request):
     if request.method == 'POST':
-        selected_subject = request.POST.get('subject')
-        students_present = request.POST.getlist('attendance[]')
-        subject = Subject.objects.get(name=selected_subject)
-        
-        # Get the session value from any of the students present in the list
-        student_id = students_present[0] # get the first student ID
-        student = Student.objects.get(id=student_id)
-        session = student.session
-
-        total_attendance_obj, created = total_attendance.objects.get_or_create(subject=subject, session=session)
-        total_attendance_obj.total_classes += 1
-        total_attendance_obj.save()
-
-        for student_id in students_present:
+        try:
+            selected_subject = request.POST.get('subject')
+            students_present = request.POST.getlist('attendance[]')
+            subject = Subject.objects.get(name=selected_subject)
+            
+            # Get the session value from any of the students present in the list
+            student_id = students_present[0] # get the first student ID
             student = Student.objects.get(id=student_id)
-            attendance, created = Agg_Attendance.objects.get_or_create(student=student, subject=subject)
-            attendance.attended_classes += 1
-            attendance.save()
+            session = student.session
 
-        messages.success(request, 'Attendance submitted successfully.')
-        return redirect('markAttendance')
+            total_attendance_obj, created = total_attendance.objects.get_or_create(subject=subject, session=session)
+            total_attendance_obj.total_classes += 1
+            total_attendance_obj.save()
 
+            for student_id in students_present:
+                student = Student.objects.get(id=student_id)
+                attendance, created = Agg_Attendance.objects.get_or_create(student=student, subject=subject)
+                attendance.attended_classes += 1
+                attendance.save()
 
+            messages.success(request, 'Attendance submitted successfully.')
+            return redirect('markAttendance')
+        except Subject.DoesNotExist:
+            messages.error(request, 'Invalid subject selected.')
+        except Student.DoesNotExist:
+            messages.error(request, 'Invalid student selected.')
+        except Exception as e:
+            messages.error(request, 'An error occurred while processing the request: {}'.format(str(e)))
+            
+    return render(request, 'attendance/markAttendance.html')
