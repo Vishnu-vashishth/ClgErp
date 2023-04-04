@@ -103,6 +103,7 @@ class Agg_Attendance(models.Model):
     attended_classes = models.IntegerField(default=0)
     total_classes = models.IntegerField(default=0)
     status = models.CharField(max_length=1,default='A', choices=ATTENDANCE_STATUS)
+    # date = models.DateField(auto_now_add=True)
 
     def save(self,*args, **kwargs):
          
@@ -117,9 +118,11 @@ class total_attendance(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     total_classes = models.IntegerField(default=0)
     session = models.CharField(max_length=4)
+    
 
     def save(self,*args, **kwargs):
-        self.total_classes = self.total_classes + 1
+       
+
         super().save(*args, **kwargs)
 
     def __str__(self):
