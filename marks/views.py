@@ -239,8 +239,12 @@ def seed_univ_result(request):
                                 name = driver.find_element('id','lblname').text
                                 roll_number = driver.find_element('id','lblRollNo').text
                                 result = driver.find_element('id','lblResult').text
-
-                                # add student information to list
+                                fail = False
+                                try:
+                                    xxx = float(result)
+                                except:
+                                    fail = True
+                                    
                                
                                 sem_field_name = f'sem{semester}'
                                 
@@ -252,6 +256,7 @@ def seed_univ_result(request):
     
                                 setattr(univ_result_instance, sem_field_name, result)
                                 univ_result_instance.save()
+                                
 
 
 
@@ -259,20 +264,23 @@ def seed_univ_result(request):
                                 studentsInfo.append({
                                     'name': name,
                                     'roll_number': roll_number,
-                                    'result': result
+                                    'result': result,
+                                    'fail': fail
                                 })
                             except Exception as e:
                                 print(e)
                                 continue
                        
 
-                      df = pd.DataFrame(studentsInfo)
-                      df.to_excel('senior.xlsx', index="true")
+                    #   df = pd.DataFrame(studentsInfo)
+                    #   df.to_excel('senior.xlsx', index="true")
                        
                       driver.quit()
                       context = {
                             "title":"seed univ Marks",
                             "teacher" : teacher,
+                            "seme" : semester,
+                            "dep" : department,
                             "studentsInfo" : studentsInfo,
                             "departments" : Student.DEPARTMENT_CHOICES,
                             "semester" : Student.SEM_CHOICES,

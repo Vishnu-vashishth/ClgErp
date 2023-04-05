@@ -70,3 +70,44 @@
         spinner.classList.add('hidden')
       })
     </script>
+
+    
+{% if studentsInfo%}
+<div>
+    <h1 class=" text-center text-2xl font-bold mb-4">Univesity Result of {{dep}}-{{seme}} sem </h1>
+    <table class="table-auto w-full">
+        <thead>
+            <tr>
+                <th class="px-4 py-2">Roll No</th>
+                <th class="px-4 py-2">Name </th>
+                <th class="px-4 py-2">Result</th>
+                <th class="px-4 py-2">Fail/Pass</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            {% for studentInfo in studentsInfo %}
+                <tr>
+                    <td class="border px-4 py-2">{{ studentInfo.roll_number }}</td>
+                    <td class="border px-4 py-2">{{ studentInfo.name }}</td>
+                    <td class="border px-4 py-2">{{ studentInfo.result }}</td>
+                    
+                    {% if studentInfo.fail == True %}
+                    <td class="border px-4 py-2 bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5  dark:bg-red-900 dark:text-red-300">
+                        
+                        Fail
+                    </td>
+                        
+                    {% else %}
+                    <td class="border px-4 py-2 bg-green-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5  dark:bg-red-900 dark:text-red-300">
+                      Pass
+                    </td>
+                    {%endif%}
+                    
+                </tr>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endif %}
