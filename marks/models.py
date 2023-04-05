@@ -19,18 +19,19 @@ class univ_result(models.Model):
        
    
    univ_roll_no = models.CharField(max_length=100)
-   sem1 = models.CharField(max_length=100, default='NA')
-   sem2 = models.CharField(max_length=100, default='NA')
-   sem3 = models.CharField(max_length=100, default='NA')
-   sem4 = models.CharField(max_length=100, default='NA')
-   sem5 = models.CharField(max_length=100, default='NA')
-   sem6 = models.CharField(max_length=100, default='NA')
-   sem7 = models.CharField(max_length=100, default='NA')
-   sem8 = models.CharField(max_length=100, default='NA')
+   sem01 = models.CharField(max_length=100, default='NA')
+   sem02 = models.CharField(max_length=100, default='NA')
+   sem03 = models.CharField(max_length=100, default='NA')
+   sem04 = models.CharField(max_length=100, default='NA')
+   sem05 = models.CharField(max_length=100, default='NA')
+   sem06 = models.CharField(max_length=100, default='NA')
+   sem07 = models.CharField(max_length=100, default='NA')
+   sem08 = models.CharField(max_length=100, default='NA')
    student = models.ForeignKey(Student, on_delete=models.CASCADE)
 
    def save(self,*args,**kwargs):
          self.student = Student.objects.get(univ_roll_no=self.univ_roll_no)
+         super().save(*args, **kwargs)
 
    def __str__(self):
         return self.student.name

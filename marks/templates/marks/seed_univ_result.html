@@ -1,0 +1,72 @@
+{% load static %}
+<form class="flex flex-col items-center space-y-8 w-full shadow-lg p-8" method ="POST" action = "{% url 'seed_univ_result'%}">
+    {%csrf_token%}
+      <div class="flex flex-col sm:flex-row md:space-x-4 sm:items-center sm:justify-between">
+        <label class="text-gray-700 font-semibold mb-2 sm:mr-4 sm:mb-0" for="department">
+          Choose Department:
+          <select id="department" required class="block px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm w-full sm:w-52 focus:outline-none focus:ring-primary-500 focus:border-primary-500" name="department">
+           
+            {% for department_code, department_name in departments%}
+            <option value="{{department_code}}">
+              {{department_name}}
+            </option>
+            {% endfor %}
+          </select>
+        </label>
+    
+        <label class="text-gray-700 font-semibold mb-2 sm:mr-4 sm:mb-0" for="semester">
+          Choose Semester:
+          <select id="department" required class="block px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm w-full sm:w-52 focus:outline-none focus:ring-primary-500 focus:border-primary-500" name="semester">
+           
+            {% for sem_code ,sem_name in semester%}
+            <option value="{{sem_code}}">
+              {{sem_name}}
+            </option>
+            {% endfor %}
+          </select>
+        </label>
+    
+       
+  
+        <label class="text-gray-700 font-semibold mb-2 sm:mr-4 sm:mb-0" for="semester">
+          Choose session:
+          <select id="department" required class="block px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm w-full sm:w-52 focus:outline-none focus:ring-primary-500 focus:border-primary-500" name="session">
+           
+            {% for session  in session%}
+            <option value="{{session}}">
+              {{session}}
+            </option>
+            {% endfor %}
+          </select>
+        </label>
+  
+  
+        
+      </div>
+  
+      <div id="spinner" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 opacity-50 z-50">
+        <div class="flex justify-center items-center h-full">
+          <i class="fa fa-spinner fa-spin text-white text-5xl"></i>
+        </div>
+      </div>
+      
+      <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Fetch
+      </button>
+    </form>
+    
+  
+  
+  
+    <script>
+      const form = document.querySelector('form')
+      const spinner = document.querySelector('#spinner')
+    
+      form.addEventListener('submit', (event) => {
+        spinner.classList.remove('hidden')
+      })
+    
+      document.addEventListener('DOMContentLoaded', () => {
+        spinner.classList.add('hidden')
+      })
+    </script>

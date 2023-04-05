@@ -5,6 +5,14 @@ from django.contrib import messages
 from django.conf import settings
 from .models import *
 from datetime import datetime
+import selenium 
+from selenium import webdriver 
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import pandas as pd
+
 # Create your views here.
 
 def show_sub_wise_marks(request):
@@ -167,4 +175,135 @@ def save_marks(request):
 
 
 def seed_univ_result(request):
-    return render(request, 'marks/index.html')
+     token = request.COOKIES.get('token')
+     if token:
+        try:
+            decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+            current_year = datetime.now().year
+            YEAR_CHOICES = [year for year in range(current_year-5, current_year+1)]
+            if decoded['role'] == 'teacher':
+                teacher = Teacher.objects.get(email=decoded['email'])
+                if request.method == 'POST':
+                      department = request.POST.get('department')
+                      semester = request.POST.get('semester')
+                      session = request.POST.get('session')
+                    
+                      students = Student.objects.filter(department=department, curent_sem=semester, session=session)
+                      univ_roll = []
+
+                      for student in students:
+                            univ_roll.append(student.univ_roll_no)
+                      print(univ_roll)
+
+                      studentsInfo = []
+                      semester = '04'
+                      driver = webdriver.Chrome()
+                      for roll_number in univ_roll:
+                            try:
+                                
+                                driver.get("https://jcboseustymca.co.in/Forms/Student/ResultStudents.aspx")
+
+                                # find the input field for roll number
+                                roll_no_input = driver.find_element('id','txtRollNo')
+
+                                # enter roll number
+                                roll_no_input.send_keys(roll_number)
+                                
+                                # find the semester dropdown element
+                                semester_dropdown = Select(driver.find_element('id','ddlSem'))
+                                # select the desired semester
+                                semester_dropdown.select_by_value(semester)
+
+                                # find the submit button
+                                submit_button = driver.find_element('id','btnResult')
+
+                                # click the submit button
+
+                                submit_button.click()
+                                
+                                try :
+                                    elem= driver.find_element('id','lblMessage')
+                                except (ValueError, TypeError):
+                                    print("")
+                                    continue
+
+
+
+                            
+                                if elem.text == "No Record Found. Please enter correct roll no or result may not be validate.":
+                                    continue
+
+                                driver.get('https://jcboseustymca.co.in/Forms/Student/PrintReportCardNew.aspx')
+
+                                # extract student information
+                                name = driver.find_element('id','lblname').text
+                                roll_number = driver.find_element('id','lblRollNo').text
+                                result = driver.find_element('id','lblResult').text
+
+                                # add student information to list
+                               
+                                sem_field_name = f'sem{semester}'
+                                
+
+                                try:
+                                  univ_result_instance = univ_result.objects.get(univ_roll_no=roll_number)
+                                except univ_result.DoesNotExist:
+                                   univ_result_instance = univ_result(univ_roll_no=roll_number)
+    
+                                setattr(univ_result_instance, sem_field_name, result)
+                                univ_result_instance.save()
+
+
+
+
+                                studentsInfo.append({
+                                    'name': name,
+                                    'roll_number': roll_number,
+                                    'result': result
+                                })
+                            except Exception as e:
+                                print(e)
+                                continue
+                       
+
+                      df = pd.DataFrame(studentsInfo)
+                      df.to_excel('senior.xlsx', index="true")
+                       
+                      driver.quit()
+                      context = {
+                            "title":"seed univ Marks",
+                            "teacher" : teacher,
+                            "studentsInfo" : studentsInfo,
+                            "departments" : Student.DEPARTMENT_CHOICES,
+                            "semester" : Student.SEM_CHOICES,
+                            "session" : YEAR_CHOICES
+
+                            }
+                      return render( request, 'marks/index.html', context )
+                
+                else:
+   
+                        context = {
+                                "title":"seed univ Marks",
+                                "teacher" : teacher,
+                                "departments" : Student.DEPARTMENT_CHOICES,
+                                "semester" : Student.SEM_CHOICES,
+                                "session" : YEAR_CHOICES
+                                }
+                        
+                        return render( request, 'marks/index.html', context )
+
+                    
+            
+            else:
+                messages.error(request, 'Invalid Credentials')
+                return redirect('Login')
+        
+        except Exception as e:
+            messages.error(request, f'something went wrong{e}')
+            return redirect('Login')
+
+
+     else :
+            messages.error(request, 'Please Login First')
+            return redirect('Login')
