@@ -1,1 +1,96 @@
 {% load static %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
+
+<!-- Create a form for the range date picker -->
+<div class ="max-w-md mx-auto">
+<form class="w-full max-w-lg mx-auto mt-8" action = "{% url 'view_date_wise_attendance' %}" method="POST">
+
+{% csrf_token %}
+  <div class="flex flex-wrap -mx-3 mb-6">
+    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+      <label for="start_date" class="block text-gray-700 font-bold mb-2">Start Date</label>
+      <div class="relative">
+        <input type="date" id="start_date" name="start_date" class="block appearance-none w-full bg-gray-100 border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+        <div class="absolute right-0 top-0 mt-2 mr-2">
+          <svg class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5 8a1 1 0 0 1 1-1h8a1 1 0 0 1 0 2H6a1 1 0 0 1-1-1zm0 4a1 1 0 0 1 1-1h8a1 1 0 0 1 0 2H6a1 1 0 0 1-1-1z" clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="w-full md:w-1/2 px-3">
+      <label for="end_date" class="block text-gray-700 font-bold mb-2">End Date</label>
+      <div class="relative">
+        <input type="date" id="end_date" name="end_date" class="block appearance-none w-full bg-gray-100 border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+        <div class="absolute right-0 top-0 mt-2 mr-2">
+          <svg class="h-6 w-6 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M5 8a1 1 0 0 1 1-1h8a1 1 0 0 1 0 2H6a1 1 0 0 1-1-1zm0 4a1 1 0 0 1 1-1h8a1 1 0 0 1 0 2H6a1 1 0 0 1-1-1z" clip-rule="evenodd" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="spinner" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 opacity-50 z-50">
+    <div class="flex justify-center items-center h-full">
+      <i class="fa fa-spinner fa-spin text-white text-5xl"></i>
+    </div>
+  </div>
+  <div class="flex justify-center">
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Get Attendance</button>
+</form>
+</div>
+
+<script>
+    const form = document.querySelector('form')
+    const spinner = document.querySelector('#spinner')
+    
+    form.addEventListener('submit', (event) => {
+      spinner.classList.remove('hidden')
+    })
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      spinner.classList.add('hidden')
+    })
+    
+    </script>
+
+
+{% if attendance_data %}
+
+<!-- my_template.html -->
+<div class= "flex flex-col items-center w-full mt-8 shadow-lg">
+
+<h1 class="font-6xl font-bold" >Attendance Data</h1>
+
+<table class="table-auto w-full">
+  <thead>
+    <tr>
+      <th class="px-4 py-2">Date</th>
+      <th class="px-4 py-2">Subjects</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for data in attendance_data %}
+      <tr>
+        <td class="border px-4 py-2">{{ data.datee }}</td>
+        <td class="border px-4 py-2">
+          {% if data.subjectList %}
+            <ul>
+            {% for subject in data.subjectList %}
+              <span>{{ subject }},</span>
+            {% endfor %}
+            </ul>
+          {% else %}
+            N/A
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+
+
+
+{% endif%}

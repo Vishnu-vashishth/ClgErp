@@ -2,7 +2,7 @@
 
 {% load static %}
 
-{% block content %}
+
 
 <form class="flex flex-col items-center space-y-8 w-full shadow-lg p-8" method ="POST" action = "{% url 'markAttendance'%}">
   {%csrf_token%}
@@ -67,29 +67,30 @@
     <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
       Fetch
     </button>
+
   </form>
   
-
-
-
-
+  
+  
+  
   
   
   {% include 'attendance/studentList.html' %}
-
-
+  
+  
+  
   <script>
-    document.getElementById("current_date").value = new Date().toISOString().slice(0,10);
     const form = document.querySelector('form')
     const spinner = document.querySelector('#spinner')
-  
+    
     form.addEventListener('submit', (event) => {
       spinner.classList.remove('hidden')
     })
-  
+    
     document.addEventListener('DOMContentLoaded', () => {
       spinner.classList.add('hidden')
     })
-  </script>
+    document.getElementById("current_date").value = new Date().toISOString().slice(0,10);
+    conosle.log(document.getElementById("current_date").value)
+    </script>
 
-{% endblock content %}

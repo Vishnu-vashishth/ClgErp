@@ -5,6 +5,7 @@
 
 
 
+
 {% if students %} 
 <form action ="{% url 'saveAttendance' %}" method = "POST">
 {% csrf_token %}
@@ -99,3 +100,10 @@
 
 
 {% endif %}
+
+
+<script>
+    
+    document.getElementById("current_date").value = new Date().toISOString().slice(0,10);
+    conosle.log(document.getElementById("current_date").value)
+  </script>

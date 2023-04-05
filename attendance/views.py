@@ -253,15 +253,18 @@ def saveAttendance(request):
                         selected_subject = request.POST.get('subject')
                         students_present = request.POST.getlist('attendance[]')
                         date_str = request.POST.get('current_date')
-                        date_obj = date.fromisoformat(date_str)
+                        print(date_str)
+                        date_obj = date.fromisoformat(date_str) 
+                        print(date_obj)
                         subject = Subject.objects.get(name=selected_subject)
                         
                         # Get the session value from any of the students present in the list
                         student_id = students_present[0] # get the first student ID
                         student = Student.objects.get(id=student_id)
                         session = student.session
+                        section = student.section
 
-                        total_attendance_obj, created = total_attendance.objects.get_or_create(subject=subject, session=session)
+                        total_attendance_obj, created = total_attendance.objects.get_or_create(subject=subject, session=session,section = section)
                         total_attendance_obj.total_classes += 1
 
                         total_attendance_obj.save()
@@ -303,9 +306,9 @@ def view_date_wise_attendance(request):
                     start_date = request.POST.get('start_date')
                     end_date = request.POST.get('end_date')
 
-                    start = datetime.strptime(start_date, '%m/%d/%Y')
-                    end = datetime.strptime(end_date, '%m/%d/%Y')
-
+                    start = date.fromisoformat(start_date)
+                    end = date.fromisoformat(end_date)
+                    
                     delta = timedelta(days=1)
                     dates = []
                     while start <= end:
@@ -313,12 +316,13 @@ def view_date_wise_attendance(request):
                             start += delta
 
                     attendance_data = []
-                    for date in dates:
-                        attendance = Datewise_Attendance.objects.prefetch_related('present_in').filter(date=date,student= student).values_list('present_in__name', flat=True)
-                        attendance_data.append({'date': date, 'subjectList': list(attendance)})
 
+                    for datee in dates:
+                        attendance = Datewise_Attendance.objects.prefetch_related('present_in').filter(date=datee,student= student).values_list('present_in__name', flat=True)
+                        if attendance:
+                           attendance_data.append({'datee': datee, 'subjectList': attendance})
 
-                    context = {'attendance_data': attendance_data}
+                    context = { 'title': 'View Attendance','student': student,'attendance_data': attendance_data}
                     return render(request, 'attendance/index.html', context)
 
                 else:
@@ -335,8 +339,8 @@ def view_date_wise_attendance(request):
                 return redirect('Login')
 
         except Exception as e:
-            messages.error(request, f'something went wrong{e}')
-            return redirect('Login')
+            messages.error(request, f'{e}')
+            return redirect('view_date_wise_attendance')
             
     else :
             messages.error(request, 'Please Login First')

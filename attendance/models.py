@@ -107,7 +107,7 @@ class Agg_Attendance(models.Model):
 
     def save(self,*args, **kwargs):
          
-         self.total_classes = total_attendance.objects.get(subject=self.subject).total_classes
+         self.total_classes = total_attendance.objects.get(subject=self.subject,section= self.student.section ).total_classes
          super().save(*args, **kwargs)
 
   
@@ -118,7 +118,7 @@ class total_attendance(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     total_classes = models.IntegerField(default=0)
     session = models.CharField(max_length=4)
-    
+    section = models.CharField(max_length=1,default='A', choices=[('A','A'),('B','B'),('C','C')])
 
     def save(self,*args, **kwargs):
        
