@@ -1,0 +1,111 @@
+
+{% load static %}
+
+
+
+
+
+{% if students %} 
+<form action ="{% url 'save_marks' %}" method = "POST">
+{% csrf_token %}
+<div class=" flex items-center justify-center pb-4 bg-white dark:bg-gray-900">   
+
+    <div >
+        <label for="subject" class="block font-medium text-gray-700 mb-2">Select Subject to upload marks:</label>
+        <select name="subject" id="subject" name= "subject" class="block w-full bg-white border border-gray-300 px-4 py-2 pr-8 rounded shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+            
+            {% for subject in subjects %}
+                <option value="{{ subject }}">{{ subject }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="sessional_index" class="block font-medium text-gray-700 mb-2">Select Sessional:</label>
+        <select name="sessional_index" id="sessional_index" name= "sessional_index" class="block w-full bg-white border border-gray-300 px-4 py-2 pr-8 rounded shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                <option value="1">Sessional 1</option>
+                <option value="2">Sessional 2</option>
+                <option value="3">Sessional 3</option>
+        </select>
+               
+    </div>
+</div>
+
+
+<div class=" flex items-center justify-center pb-4 bg-white dark:bg-gray-900">   
+    <label for="table-search" class="sr-only">Search</label>
+    <div class="relative">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+        </div>
+        <input type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg md:w-80 w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for users">
+    </div>
+</div>
+
+
+
+<div class="  relative overflow-x-auto shadow-md sm:rounded-lg">
+   
+
+    <table class=" w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                
+                <th scope="col" class="px-6 py-3">
+                    Name
+                </th>
+                         
+                <th scope="col" class="px-6 py-3">
+                   Obtained Marks
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    Max Marks
+                 </th>
+            </tr>
+        </thead>
+
+
+        <tbody class = "shadow-md sm:rounded-lg">
+
+            {% for student in students%}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
+                    <img class="w-10 h-10 rounded-full" src="{% static 'img/logo.png' %}" alt="Jese image">
+                    <div class="pl-3">
+                        <div class="text-base font-semibold">{{student.name}}</div>
+                        <span class="font-normal text-gray-500">roll-{{student.roll}}</span>
+                        <span class="font-normal text-gray-500">sem-{{student.curent_sem}}</span>
+                        <span class="font-normal text-gray-500">sec-{{student.section}}</span>
+                        
+                    </div>  
+                </th>
+                
+                
+                <td class="px-6 py-4">
+                    <input type="text" name="obtained_marks" value="" class="w-16 h-8 rounded-md border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                </td>
+
+                <td class="px-6 py-4">
+                    <input type="text" name="max_marks" value="" class="w-16 h-8 rounded-md border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                </td>
+            </tr>
+          {% endfor %}
+
+
+        </tbody>
+        
+    </table>
+    <input type="hidden" id="current_date" name="current_date" value="">
+    <div id="spinner" class="hidden fixed top-0 left-0 w-full h-full bg-gray-900 opacity-90 z-50">
+        <div class="flex justify-center items-center h-full">
+           <i class="fa fa-spinner fa-spin text-white text-5xl"></i> 
+           
+            {% comment %} <img src="{% static 'img/ghost.gif' %}" alt="spinner" class="h-20 w-20"> {% endcomment %}
+          </div>
+      </div>
+    <button type="submit" class="p-8 md:ml-[60%]inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue disabled:opacity-25 transition ease-in-out duration-150 mt-4">Save Attendance</button>
+
+</form>
+
+
+
+
+{% endif %}
