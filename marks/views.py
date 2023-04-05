@@ -43,8 +43,8 @@ def show_sub_wise_marks(request):
                          "subjects" : subjects,
                          "marks" : marks
                           }
-                    return render( request, 'attendance/index.html', context )
-                return render( request, 'attendance/index.html', context )
+                    return render( request, 'marks/index.html', context )
+                return render( request, 'marks/index.html', context )
             
              
             else:
@@ -87,7 +87,7 @@ def upload_marks(request):
                             "session" : YEAR_CHOICES
 
                             }
-                      return render( request, 'attendance/index.html', context )
+                      return render( request, 'marks/index.html', context )
                 
                 else:
                        
@@ -139,7 +139,7 @@ def save_marks(request):
                         marks = Marks.objects.create(student=student, subject=subject, sessional_index=sessional_index[i], marks_obtained=marks_obtained[i], max_marks=max_marks[i])
                         marks.save()
                     messages.success(request, 'Marks Uploaded Successfully')
-                    return redirect('/')
+                    return redirect('Upload_Marks')
                 else:
                     messages.error(request, 'Invalid Credentials')
                     return redirect('Upload_Marks')

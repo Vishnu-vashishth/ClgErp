@@ -78,7 +78,7 @@
 {% elif title == 'Profile' %}
 {% include 'attendance/profile.html' %} {% endcomment %}
 
-{% elif title == 'Subject Wise Marks'%}
+{% if title == 'Subject Wise Marks'%}
 {% include 'marks/show_sub_wise_marks.html' %}
 
 {% elif title == 'Upload Marks'%}
