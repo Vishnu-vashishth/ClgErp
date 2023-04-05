@@ -61,7 +61,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'attendance',
-    'marks'
+    'marks',
+    'gatepass'
     
 ]
 
