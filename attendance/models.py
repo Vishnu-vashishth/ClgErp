@@ -103,11 +103,13 @@ class Agg_Attendance(models.Model):
     attended_classes = models.IntegerField(default=0)
     total_classes = models.IntegerField(default=0)
     status = models.CharField(max_length=1,default='A', choices=ATTENDANCE_STATUS)
+    percentage = models.FloatField(default=0)
     # date = models.DateField(auto_now_add=True)
 
     def save(self,*args, **kwargs):
          
          self.total_classes = total_attendance.objects.get(subject=self.subject,section= self.student.section ).total_classes
+         self.percentage = (self.attended_classes/self.total_classes)*100
          super().save(*args, **kwargs)
 
   
