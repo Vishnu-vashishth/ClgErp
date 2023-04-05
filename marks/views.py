@@ -11,7 +11,13 @@ from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
 import pandas as pd
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+
 
 # Create your views here.
 
@@ -174,6 +180,8 @@ def save_marks(request):
 
 
 
+
+
 def seed_univ_result(request):
      token = request.COOKIES.get('token')
      if token:
@@ -181,11 +189,13 @@ def seed_univ_result(request):
             decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
             current_year = datetime.now().year
             YEAR_CHOICES = [year for year in range(current_year-5, current_year+1)]
+            
             if decoded['role'] == 'teacher':
                 teacher = Teacher.objects.get(email=decoded['email'])
                 if request.method == 'POST':
                       department = request.POST.get('department')
                       semester = request.POST.get('semester')
+                      result_sem = request.POST.get('result_sem')
                       session = request.POST.get('session')
                     
                       students = Student.objects.filter(department=department, curent_sem=semester, session=session)
@@ -193,14 +203,15 @@ def seed_univ_result(request):
 
                       for student in students:
                             univ_roll.append(student.univ_roll_no)
-                      print(univ_roll)
+                      
 
                       studentsInfo = []
-                      semester = '04'
-                      driver = webdriver.Chrome()
+                      semester = '0'+result_sem
+                      driver = webdriver.Chrome(r'C:\Users\vishnu vashishth\Documents\chromedriver_win32\chromedriver.exe', options=chrome_options)
+                      
                       for roll_number in univ_roll:
                             try:
-                                
+
                                 driver.get("https://jcboseustymca.co.in/Forms/Student/ResultStudents.aspx")
 
                                 # find the input field for roll number

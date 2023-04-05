@@ -15,7 +15,7 @@
         </label>
     
         <label class="text-gray-700 font-semibold mb-2 sm:mr-4 sm:mb-0" for="semester">
-          Choose Semester:
+          Choose Current Semester:
           <select id="department" required class="block px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm w-full sm:w-52 focus:outline-none focus:ring-primary-500 focus:border-primary-500" name="semester">
            
             {% for sem_code ,sem_name in semester%}
@@ -39,7 +39,18 @@
             {% endfor %}
           </select>
         </label>
-  
+     
+        <label class="text-gray-700 font-semibold mb-2 sm:mr-4 sm:mb-0" for="semester">
+            Choose Result Semester:
+            <select id="department" required class="block px-4 py-2 bg-white border border-gray-300 rounded-md shadow-sm w-full sm:w-52 focus:outline-none focus:ring-primary-500 focus:border-primary-500" name="result_sem">
+             
+              {% for sem_code ,sem_name in semester%}
+              <option value="{{sem_code}}">
+                {{sem_name}}
+              </option>
+              {% endfor %}
+            </select>
+          </label>
   
         
       </div>
@@ -73,7 +84,7 @@
 
     
 {% if studentsInfo%}
-<div>
+<div class= "mt-4">
     <h1 class=" text-center text-2xl font-bold mb-4">Univesity Result of {{dep}}-{{seme}} sem </h1>
     <table class="table-auto w-full">
         <thead>
