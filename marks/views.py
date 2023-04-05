@@ -146,21 +146,25 @@ def save_marks(request):
                         marks = Marks.objects.create(student=student, subject=subject, sessional_index=sessional_index[i], marks_obtained=marks_obtained[i], max_marks=max_marks[i])
                         marks.save()
                     messages.success(request, 'Marks Uploaded Successfully')
-                    return redirect('Upload_Marks')
+                    return redirect('upload_marks')
                 else:
                     messages.error(request, 'Invalid Credentials')
-                    return redirect('Upload_Marks')
+                    return redirect('upload_marks')
             else:
                 messages.error(request, 'Invalid Credentials')
-                return redirect('Upload_Marks')
+                return redirect('upload_marks')
         
         except Exception as e:
             messages.error(request, f'something went wrong{e}')
-            return redirect('Upload_Marks')
+            return redirect('upload_Marks')
 
 
     else :
             messages.error(request, 'Please Login First')
-            return redirect('Upload_Marks')
+            return redirect('upload_Marks')
      
 
+
+
+def seed_univ_result(request):
+    return render(request, 'marks/index.html')

@@ -26,7 +26,7 @@ class Student (models.Model):
     email = models.EmailField(max_length=100)
     password = models.CharField(max_length=100)
     roll = models.CharField(max_length=60)
-    univ_roll_no = models.CharField(max_length=100)
+    univ_roll_no = models.CharField(max_length=100, default=None)
     section = models.CharField(max_length=1,default='A', choices=[('A','A'),('B','B'),('C','C')])
     session = models.CharField(max_length=4, default=None)                           
     curent_sem = models.IntegerField(default =1,choices=SEM_CHOICES)

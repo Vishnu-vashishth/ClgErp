@@ -52,6 +52,7 @@
   {% if marks %}
   <div>
       <h1 class="text-2xl font-bold mb-4">Subject Wise Marks</h1>
+      
       {% for sessional_index in marks.values_list('sessional_index', flat=True).distinct %}
           <h2 class="text-xl font-bold mb-2">Sessional_{{ sessional_index }}</h2>
           <table class="table-auto w-full">
