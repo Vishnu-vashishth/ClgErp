@@ -25,7 +25,8 @@ class Student (models.Model):
     
     email = models.EmailField(max_length=100)
     password = models.CharField(max_length=100)
-    roll = models.IntegerField()
+    roll = models.CharField(max_length=60)
+    univ_roll_no = models.CharField(max_length=100)
     section = models.CharField(max_length=1,default='A', choices=[('A','A'),('B','B'),('C','C')])
     session = models.CharField(max_length=4, default=None)                           
     curent_sem = models.IntegerField(default =1,choices=SEM_CHOICES)
@@ -41,6 +42,7 @@ class Student (models.Model):
     
     def save(self,*args, **kwargs):
         self.password = make_password(self.password)
+        self.roll = f'{self.department}-{self.session[2:]}-{self.univ_roll_no[6:]}'
         super().save(*args, **kwargs)
     
     def increaseSem(self):

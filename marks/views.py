@@ -8,56 +8,57 @@ from datetime import datetime
 # Create your views here.
 
 def show_sub_wise_marks(request):
-     token = request.COOKIES.get('token')
-     if token:
+    token = request.COOKIES.get('token')
+    if token:
         try:
             decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
             if decoded['role'] == 'student':
                 student = Student.objects.get(email=decoded['email'])
                 subjects = Subject.objects.filter(sem=student.curent_sem)
-                context = {
-                         "title":"Subject Wise Marks",
-                         "role" : "student",
-                         "student":student,
-                         "subjects" : subjects
-                          }
                 
                 if request.method == 'POST':
                     sub = request.POST.get('subject')
                     ses_index = request.POST.get('sessional_index')
                     if sub == "all" and ses_index == "all":
-                        # attendance = Agg_Attendance.objects.filter(student=student)
-                        marks= Marks.objects.filter(student=student)
+                        marks = Marks.objects.filter(student=student)
                     elif sub == "all" and ses_index != "all":
-                        marks= Marks.objects.filter(student=student, sessional_index=ses_index)
+                        marks = Marks.objects.filter(student=student, sessional_index=ses_index)
                     elif sub != "all" and ses_index == "all":
                         sub = Subject.objects.get(name=sub)
-                        marks= Marks.objects.filter(student=student, subject=sub)
+                        marks = Marks.objects.filter(student=student, subject=sub)
                     else:
                         sub = Subject.objects.get(name=sub)
-                        marks= Marks.objects.filter(student=student, subject=sub, sessional_index=ses_index)
+                        marks = Marks.objects.filter(student=student, subject=sub, sessional_index=ses_index)
+                        
                     context = {
-                         "title":"Subject Wise Marks",
-                         "role" : "student",
-                         "student" : student,
-                         "subjects" : subjects,
-                         "marks" : marks
-                          }
-                    return render( request, 'marks/index.html', context )
-                return render( request, 'marks/index.html', context )
+                        "title": "Subject Wise Marks",
+                        "role": "student",
+                        "student": student,
+                        "subjects": subjects,
+                        "marks": marks
+                    }
+                else:
+                    context = {
+                        "title": "Subject Wise Marks",
+                        "role": "student",
+                        "student": student,
+                        "subjects": subjects
+                    }
+
+                return render(request, 'marks/index.html', context)
             
-             
             else:
                 messages.error(request, 'Invalid Credentials')
                 return redirect('Login')
 
         except Exception as e:
-            messages.error(request, f'something went wrong{e}')
+            messages.error(request, f'Something went wrong: {e}')
             return redirect('Login')
             
-     else :
-            messages.error(request, 'Please Login First')
-            return redirect('Login')
+    else:
+        messages.error(request, 'Please Login First')
+        return redirect('Login')
+
      
      
 def upload_marks(request):
@@ -120,6 +121,12 @@ def upload_marks(request):
             return redirect('Login')
 
 
+
+
+
+
+
+
 def save_marks(request):
     token = request.COOKIES.get('token')
     if token:
@@ -156,3 +163,4 @@ def save_marks(request):
             messages.error(request, 'Please Login First')
             return redirect('Upload_Marks')
      
+
