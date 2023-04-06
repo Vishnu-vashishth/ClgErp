@@ -173,20 +173,23 @@ def approve_request(request,request_id):
 
 def reject_request(request,request_id):
     try:
-        token = request.COOKIES.get('token')
-        if not token:
-            messages.error(request, 'You are not logged in')
-            return redirect('Login')
-        decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
-        teacher = Teacher.objects.get(email=decoded['email'])
-        role = Roles.objects.get(teacher=teacher.id).name
-        if role == 'HOD' or role == 'CC' or role == 'Principal':
+            token = request.COOKIES.get('token')
+            if not token:
+                messages.error(request, 'You are not logged in')
+                return redirect('Login')
+            decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+
+            if decoded['role'] != 'teacher':
+                messages.error(request, 'You are not authorized to access this page')
+                return redirect('Login')
+            teacher = Teacher.objects.get(email=decoded['email'])
+            role = Roles.objects.get(teacher=teacher).name
             if request.method == 'POST':
                 req = student_requests.objects.get(request_id=request_id)
                 if role == 'CC':
                         req.status = 'Rejected by cc'
                         req.save()
-                        sendsms(f'+91{req.student.phone}', f'Your request with id {req.request_id} has been rejected by cc')
+                        # sendsms(f'+91{req.student.phone}', f'Your request with id {req.request_id} has been rejected by cc')
                         return redirect('request_list')
 
                 elif role == 'HOD':
@@ -225,38 +228,38 @@ def reject_request(request,request_id):
 
 
 
-# def showstatus(request):
-#       token = request.COOKIES.get('token')
-#       if not token:
-#             reqid = request.COOKIES.get('reqcode')
-#             if reqid != None:
-#                 req = student_requests.objects.get(request_id=reqid)
-#                 return render(request, 'gatepass/index.html', {'title':'showstatus','req': req.status})
-#             else:  
-#                 return redirect('trackstat')
+def show_status(request):
+      token = request.COOKIES.get('token')
+      if not token:
+            reqid = request.COOKIES.get('reqcode')
+            if reqid != None:
+                req = student_requests.objects.get(request_id=reqid)
+                return render(request, 'gatepass/index.html', {'title':'showstatus','req': req.status})
+            else:  
+                return redirect('trackstat')
            
-#       else:
-#            decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
-#            if decoded['role'] == 'student':
-#                 student = Student.objects.get(email=decoded['email'])
-#                 reqid = request.COOKIES.get('reqcode')
-#                 if reqid != None:
-#                    req = student_requests.objects.get(request_id=reqid)
-#                    return render(request, 'gatepass/index.html', {'title':'showstatus','student':student,'req': req})
+      else:
+           decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
+           if decoded['role'] == 'student':
+                student = Student.objects.get(email=decoded['email'])
+                reqid = request.COOKIES.get('reqcode')
+                if reqid != None:
+                   req = student_requests.objects.get(request_id=reqid)
+                   return render(request, 'gatepass/index.html', {'title':'showstatus','student':student,'req': req})
 
-#                 else:  
-#                   return redirect('trackstat')
+                else:  
+                  return redirect('trackstat')
                 
             
-#            elif decoded['role'] == 'teacher':
-#                 teacher = Teacher.objects.get(email=decoded['email'])
+           elif decoded['role'] == 'teacher':
+                teacher = Teacher.objects.get(email=decoded['email'])
                 
-#                 if reqid != None:
-#                    req = student_requests.objects.get(request_id=reqid)
-#                    return render(request, 'gatepass/index.html', {'title':'showstatus','teacher':teacher,'req': req})
+                if reqid != None:
+                   req = student_requests.objects.get(request_id=reqid)
+                   return render(request, 'gatepass/index.html', {'title':'showstatus','teacher':teacher,'req': req})
 
-#                 else:  
-#                   return redirect('trackstat')
+                else:  
+                  return redirect('trackstat')
 
 
 
