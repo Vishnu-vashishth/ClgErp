@@ -41,7 +41,7 @@ def request_gate_pass(request):
                 try:
                     if student_requests.objects.filter(request_id=id).exists():
                         messages.error(request, f'You have already requested for today with id {id} ')
-                        return redirect('Login')
+                        return redirect('request_gate_pass')
                     else:
                         student_request = student_requests(reason=reason, student=student, guardian_name=guardian_name, guardian_phone=guardian_phone, relation=relation,status = 'Pending')
                         student_request.save()
@@ -50,7 +50,7 @@ def request_gate_pass(request):
                            smsresult = sendsms(f'+91{student.father_phone}', f'Hey {student.father_name} {student.name} belongs to you and has requested for leave from college with reqid {id}')
                             
                         messages.success( request, f'Your request has been submitted with id {id}')
-                        response = redirect('Login')
+                        response = redirect('show_status')
                         response.set_cookie('reqcode', id)
                         return response
                 except Exception as e:
@@ -274,17 +274,19 @@ def show_status(request):
                     return redirect('track_stat')
                 
         decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
-            
-        
-            
+                   
         if decoded['role'] == 'student':
-                    student = Student.objects.get(email=decoded['email'])
-                    reqid = request.COOKIES.get('reqcode')
-                    if reqid != None:
-                        req = student_requests.objects.get(request_id=reqid)
-                        return render(request, 'gatepass/index.html', {'title':'show_status','student':student,'req': req})
+                    try:
+                        student = Student.objects.get(email=decoded['email'])
+                        reqid = request.COOKIES.get('reqcode')
+                        if reqid != None:
+                            req = student_requests.objects.get(request_id=reqid)
+                            return render(request, 'gatepass/index.html', {'title':'show_status','student':student,'req': req.status})
 
-                    else:  
+                        else:  
+                            return redirect('track_stat')
+                    except Exception as e:
+                        messages.error(request, f'Something went wrong {e}')
                         return redirect('track_stat')
                     
                 
