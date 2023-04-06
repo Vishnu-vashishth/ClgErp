@@ -144,7 +144,7 @@ def approve_request(request,request_id):
                     req.save()
                     studentPhone = req.student.phone
                     sendsms(f'+91{studentPhone}', f'Your request with id {req.request_id} has been approved by cc')
-                    hodphone =  req.cc.phone
+                    hodphone =  Teacher.objects.get(id=req.hod).phone
                     smsresult =   sendsms(f'+91{hodphone}', f'Dear HOD request with id {req.request_id} has been approved by cc and is pending your approval. Please login to your account to approve the request.Follow the link https://clggatepasssys-production.up.railway.app/request_list ')
                     print(smsresult)
                     return redirect('request_list')

@@ -266,6 +266,7 @@ def saveAttendance(request):
                         session = student.session
                         section = student.section
 
+
                         total_attendance_obj, created = total_attendance.objects.get_or_create(subject=subject, session=session,section = section)
                         total_attendance_obj.total_classes += 1
 
@@ -276,6 +277,21 @@ def saveAttendance(request):
                             attendance, created = Agg_Attendance.objects.get_or_create(student=student, subject=subject)
                             attendance.attended_classes += 1
                             attendance.status = 'P'
+                            attendance.save()
+
+                        students_absent_list = set(studentid) - set(students_present)
+
+                        for student_id in students_absent_list:
+                            student = Student.objects.get(id=student_id)
+                            attendance, created = Agg_Attendance.objects.get_or_create(student=student, subject=subject)
+                            attendance.status = 'A'
+                            attendance.save()
+                        students_absent_list = set(studentid) - set(students_present)
+
+                        for student_id in students_absent_list:
+                            student = Student.objects.get(id=student_id)
+                            attendance, created = Agg_Attendance.objects.get_or_create(student=student, subject=subject)
+                            attendance.status = 'A'
                             attendance.save()
 
 
