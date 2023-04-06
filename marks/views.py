@@ -29,10 +29,13 @@ def show_sub_wise_marks(request):
             if decoded['role'] == 'student':
                 student = Student.objects.get(email=decoded['email'])
                 subjects = Subject.objects.filter(sem=student.curent_sem)
-                
+
                 if request.method == 'POST':
                     sub = request.POST.get('subject')
                     ses_index = request.POST.get('sessional_index')
+
+                    ses_indexes = list(Marks.objects.filter(student=student).values_list('sessional_index', flat=True).distinct())
+                    
                     if sub == "all" and ses_index == "all":
                         marks = Marks.objects.filter(student=student)
                     elif sub == "all" and ses_index != "all":
@@ -49,14 +52,17 @@ def show_sub_wise_marks(request):
                         "role": "student",
                         "student": student,
                         "subjects": subjects,
-                        "marks": marks
+                        "marks": marks,
+                        "ses_indexes": ses_indexes,
+                        
                     }
                 else:
                     context = {
                         "title": "Subject Wise Marks",
                         "role": "student",
                         "student": student,
-                        "subjects": subjects
+                        "subjects": subjects,
+                        # "ses_indexes": ses_indexes
                     }
 
                 return render(request, 'marks/index.html', context)
@@ -148,34 +154,47 @@ def save_marks(request):
             decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
             if decoded['role'] == 'teacher':
                 teacher = Teacher.objects.get(email=decoded['email'])
+                students= Student.objects.all()
                 if request.method == 'POST':
-                    student = request.POST.getlist('student')
-                    subject = request.POST.getlist('subject')
-                    sessional_index = request.POST.getlist('sessional_index')
+                    student_names = request.POST.getlist('student')
+                    students = [Student.objects.get(id=id) for id in student_names]
+                    # student = Student.objects.filter(id__in=student_names)
+                    subject = request.POST.get('subject')
+                    sessional_index = request.POST.get('sessional_index')
+                    print(sessional_index, subject, students, student_names)
                     marks_obtained = request.POST.getlist('marks_obtained')
-                    max_marks = request.POST.getlist('max_marks')
-                    for i in range(len(student)):
-                        student = Student.objects.get(id=student[i])
-                        subject = Subject.objects.get(id=subject[i])
-                        marks = Marks.objects.create(student=student, subject=subject, sessional_index=sessional_index[i], marks_obtained=marks_obtained[i], max_marks=max_marks[i])
-                        marks.save()
+                    max_marks = request.POST.get('max_marks')
+                    subject_id = Subject.objects.get(name=subject)
+                    print(marks_obtained, max_marks)
+                    for i, student in enumerate(students):
+                       
+                       mark = marks_obtained[i]
+                    #    maxm = max_marks[i]
+
+                       marks, created = Marks.objects.get_or_create(student=student, subject=subject_id, sessional_index=sessional_index, defaults={'marks_obtained': mark, 'max_marks': max_marks} )
+                       if not created:
+                           marks.marks_obtained = mark
+                           marks.max_marks = max_marks
+                           marks.save()
+                       print("marks saved")
+                       
                     messages.success(request, 'Marks Uploaded Successfully')
-                    return redirect('upload_marks')
+                    return redirect('/')
                 else:
                     messages.error(request, 'Invalid Credentials')
-                    return redirect('upload_marks')
+                    return redirect('Login')
             else:
                 messages.error(request, 'Invalid Credentials')
-                return redirect('upload_marks')
+                return redirect('Login')
         
         except Exception as e:
             messages.error(request, f'something went wrong{e}')
-            return redirect('upload_Marks')
+            return redirect('Login')
 
 
     else :
             messages.error(request, 'Please Login First')
-            return redirect('upload_Marks')
+            return redirect('Login')
      
 
 
@@ -207,7 +226,7 @@ def seed_univ_result(request):
 
                       studentsInfo = []
                       semester = '0'+result_sem
-                      driver = webdriver.Chrome(r'C:\Users\vishnu vashishth\Documents\chromedriver_win32\chromedriver.exe', options=chrome_options)
+                      driver = webdriver.Chrome(r'D:\Downloads\chromedriver_win32\chromedriver.exe', options=chrome_options)
                       
                       for roll_number in univ_roll:
                             try:
@@ -320,6 +339,7 @@ def seed_univ_result(request):
         
         except Exception as e:
             messages.error(request, f'something went wrong{e}')
+            print(e)
             return redirect('Login')
 
 

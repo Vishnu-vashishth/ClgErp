@@ -252,6 +252,8 @@ def saveAttendance(request):
                     try:
                         selected_subject = request.POST.get('subject')
                         students_present = request.POST.getlist('attendance[]')
+                        studentid= request.POST.getlist('studentid[]')
+                        print(studentid)
                         date_str = request.POST.get('current_date')
                         print(date_str)
                         date_obj = date.fromisoformat(date_str) 
@@ -259,7 +261,7 @@ def saveAttendance(request):
                         subject = Subject.objects.get(name=selected_subject)
                         
                         # Get the session value from any of the students present in the list
-                        student_id = students_present[0] # get the first student ID
+                        student_id = studentid[0]  # get the first student ID
                         student = Student.objects.get(id=student_id)
                         session = student.session
                         section = student.section

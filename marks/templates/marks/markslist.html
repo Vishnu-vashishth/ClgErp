@@ -25,27 +25,29 @@
                 <option value="2">Sessional 2</option>
                 <option value="3">Sessional 3</option>
         </select>
-               
+        <label for="max_marks" class="block font-medium text-gray-700 mb-2">Enter Maximum Marks:</label> 
+        <input required type="text" name="max_marks" value="" class="w-60 h-8 rounded-md border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">     
     </div>
 </div>
 
 
-<div class=" flex items-center justify-center pb-4 bg-white dark:bg-gray-900">   
-    <label for="table-search" class="sr-only">Search</label>
-    <div class="relative">
-        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
-        </div>
-        <input type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg md:w-80 w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for users">
-    </div>
-</div>
+
 
 
 
 <div class="  relative overflow-x-auto shadow-md sm:rounded-lg">
    
 
-    <table class=" w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <table id="student-table" class=" w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <div class=" flex items-center justify-center pb-4 bg-white dark:bg-gray-900">   
+            <label for="table-search" class="sr-only">Search</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                </div>
+                <input type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg md:w-80 w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for users">
+            </div>
+        </div>
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 
@@ -54,11 +56,11 @@
                 </th>
                          
                 <th scope="col" class="px-6 py-3">
-                   Obtained Marks
+                  Marks Obtained
                 </th>
-                <th scope="col" class="px-6 py-3">
+                {% comment %} <th scope="col" class="px-6 py-3">
                     Max Marks
-                 </th>
+                 </th> {% endcomment %}
             </tr>
         </thead>
 
@@ -74,18 +76,18 @@
                         <span class="font-normal text-gray-500">roll-{{student.roll}}</span>
                         <span class="font-normal text-gray-500">sem-{{student.curent_sem}}</span>
                         <span class="font-normal text-gray-500">sec-{{student.section}}</span>
-                        
+                        <input type="hidden" name="student" value="{{student.id}}">
                     </div>  
                 </th>
                 
                 
                 <td class="px-6 py-4">
-                    <input type="text" name="obtained_marks" value="" class="w-16 h-8 rounded-md border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <input required type="text" name="marks_obtained" value="" class="w-16 h-8 rounded-md border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                 </td>
 
-                <td class="px-6 py-4">
+                {% comment %} <td class="px-6 py-4">
                     <input type="text" name="max_marks" value="" class="w-16 h-8 rounded-md border-gray-300 focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                </td>
+                </td> {% endcomment %}
             </tr>
           {% endfor %}
 
@@ -101,7 +103,7 @@
             {% comment %} <img src="{% static 'img/ghost.gif' %}" alt="spinner" class="h-20 w-20"> {% endcomment %}
           </div>
       </div>
-    <button type="submit" class="p-8 md:ml-[60%]inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue disabled:opacity-25 transition ease-in-out duration-150 mt-4">Save Attendance</button>
+    <button type="submit" class="p-8 md:ml-[60%]inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue disabled:opacity-25 transition ease-in-out duration-150 mt-4">Save Marks</button>
 
 </form>
 
@@ -109,3 +111,22 @@
 
 
 {% endif %}
+
+<script>
+    const table = document.querySelector('#student-table');
+    const searchInput = document.querySelector('#table-search-users');
+
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+
+        table.querySelectorAll('tbody tr').forEach(row => {
+            const name = row.querySelector('th div.text-base').textContent.toLowerCase();
+            if (name.includes(query)) {
+                row.style.display = 'table-row';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });   
+
+</script>

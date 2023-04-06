@@ -24,7 +24,7 @@
 </div>
 
 
-<div class=" flex items-center justify-center pb-4 bg-white dark:bg-gray-900">   
+{% comment %} <div class=" flex items-center justify-center pb-4 bg-white dark:bg-gray-900">   
     <label for="table-search" class="sr-only">Search</label>
     <div class="relative">
         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -32,14 +32,23 @@
         </div>
         <input type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg md:w-80 w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for users">
     </div>
-</div>
+</div> {% endcomment %}
 
 
 
 <div class="  relative overflow-x-auto shadow-md sm:rounded-lg">
    
 
-    <table class=" w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <table id="student-table" class=" w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <div class=" mt-8 flex items-center justify-center pb-4 bg-white dark:bg-gray-900">   
+            <label for="table-search" class="sr-only">Search</label>
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                </div>
+                <input type="text" id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg md:w-80 w-60 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for users">
+            </div>
+        </div>
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 
@@ -55,7 +64,7 @@
 
 
         <tbody class = "shadow-md sm:rounded-lg">
-
+           
             {% for student in students%}
             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                 <th scope="row" class="flex items-center px-6 py-4 text-gray-900 whitespace-nowrap dark:text-white">
@@ -69,15 +78,18 @@
                     </div>  
                 </th>
                 
+              
                 
                 <td class="px-6 py-4">
                     <label class="relative inline-flex items-center mr-5 cursor-pointer">
+                        <input type = "hidden" value ="{{student.id}}" name = "studentid[]">
                         <input type="checkbox" name="attendance[]" value="{{student.id}}" class="sr-only peer" checked>
                         <div class="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-focus:ring-4 peer-focus:ring-green-300 dark:peer-focus:ring-green-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
                         <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Present</span>
                       </label>   
                 </td>
             </tr>
+
           {% endfor %}
 
 
@@ -104,6 +116,20 @@
 
 <script>
     
-    document.getElementById("current_date").value = new Date().toISOString().slice(0,10);
-    conosle.log(document.getElementById("current_date").value)
+    const searchInput = document.querySelector('#table-search-users');
+    const rows = document.querySelectorAll('tbody tr');
+
+    searchInput.addEventListener('keyup', function(event) {
+        const searchValue = event.target.value.toLowerCase().trim();
+
+        rows.forEach(row => {
+            const name = row.querySelector('th').textContent.toLowerCase();
+
+            if (name.includes(searchValue)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
   </script>

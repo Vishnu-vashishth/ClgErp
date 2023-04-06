@@ -1,4 +1,5 @@
 {% load static %}
+{% load filters %}
 {% block content %}
 <div class="max-w-md mx-auto">
     <h1 class="text-2xl font-bold mb-4">View Marks</h1>
@@ -30,7 +31,7 @@
                     {% comment %} <img src="{% static 'img/ghost.gif' %}" alt="spinner" class="h-20 w-20"> {% endcomment %}
                   </div>
               </div>
-            <button type="submit" class="px-4 py-2 font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">View Attendance</button>
+            <button type="submit" class="px-4 py-2 font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">View Marks</button>
         </div>
     </form>
 </div>
@@ -51,33 +52,59 @@
 
   {% if marks %}
   <div>
-      <h1 class="text-2xl font-bold mb-4">Subject Wise Marks</h1>
-      
-      {% for sessional_index in marks.values_list('sessional_index', flat=True).distinct %}
-          <h2 class="text-xl font-bold mb-2">Sessional_{{ sessional_index }}</h2>
-          <table class="table-auto w-full">
-              <thead>
-                  <tr>
-                      <th class="px-4 py-2">Subject</th>
-                      <th class="px-4 py-2">Marks Obtained</th>
-                      <th class="px-4 py-2">Total Marks</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {% for mark in marks.filter(sessional_index=sessional_index) %}
-                      <tr>
-                          <td class="border px-4 py-2">{{ mark.subject }}</td>
-                          <td class="border px-4 py-2">{{ mark.marks_obtained }}</td>
-                          <td class="border px-4 py-2">{{ mark.max_marks }}</td>
-                      </tr>
-                  {% endfor %}
-              </tbody>
-          </table>
-      {% endfor %}
+    <h1 class="text-2xl font-bold mb-4">Subject Wise Marks</h1>
+    {% for ses in ses_indexes %}
+
+    {% if marks|sessional_filter:ses%}
+      <h2 class="text-lg font-bold mt-16 mb-2">Sessional {{ ses }}</h2>
+      <table class="table-auto w-full">
+        <thead>
+          <tr>
+            <th class="px-4 py-2">Subject</th>
+            <th class="px-4 py-2">Marks Obtained</th>
+            <th class="px-4 py-2">Maximum Marks</th>
+          </tr>
+        </thead>
+        {% endif %}
+        <tbody>
+            {% for mark in marks|sessional_filter:ses %}
+            <tr>
+              <td class="border px-4 py-2">{{ mark.subject.name }}</td>
+              <td class="border px-4 py-2">{{ mark.marks_obtained }}</td>
+              <td class="border px-4 py-2">{{ mark.max_marks }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endfor %}
   </div>
 {% endif %}
 
-{% comment %} {% include 'attendance/studentList.html' %} {% endcomment %}
+ {% comment %} {% if marks %}
+  <div>
+      <h1 class="text-2xl font-bold mb-4">Subject Wise Marks</h1>
+        <table class="table-auto w-full">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2">Subject</th>
+                    <th class="px-4 py-2">Marks Obtained</th>
+                    <th class="px-4 py-2">Total Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mark in marks %}
+                    <tr>
+                        <td class="border px-4 py-2">{{ mark.subject.name }}</td>
+                        <td class="border px-4 py-2">{{ mark.marks_obtained }}</td>
+                        <td class="border px-4 py-2">{{ mark.max_marks }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+      </table>
+ 
+  
+  </div>
+{% endif %}  {% endcomment %}
 
 
 {% endblock content %}
