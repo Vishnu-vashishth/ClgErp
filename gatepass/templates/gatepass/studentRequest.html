@@ -1,4 +1,4 @@
-{% load sratic%}
+{% load static%}
 
 
 
@@ -8,7 +8,7 @@
 <section class="bg-gray-100 flex items-center pt-4 pb-4 justify-center">
     
   
-    <div class="rounded-lg bg-white lg:w-[60%]  p-8 shadow-lg lg:col-span-3 lg:p-12">
+    <div class="md:rounded-lg bg-white lg:w-[60%]  p-8 shadow-lg lg:col-span-3 lg:p-12">
          <form action="{% url 'request_gate_pass' %} " method = "post" class="space-y-8">
            {%csrf_token%}
           
@@ -50,7 +50,7 @@
            <div class="grid grid-cols-1 gap-4 text-center sm:grid-cols-3">
                <div class="form-group">
                    <label for="course">Relation:</label>
-                   <select id="course" class="form-control" name="relation">
+                   <select id="course" class="form-control p-2 rounded-md" name="relation">
                      
                      <option value="" disabled selected>Select Relation</option>
                      

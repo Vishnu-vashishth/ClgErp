@@ -36,29 +36,26 @@ class student_requests(models.Model):
 
     def save(self, *args, **kwargs):
       
+        Student = self.student
+        CC = Roles.objects.get( name = "CC", department = Student.department, semester = self.student.curent_sem, section = self.student.section)
+        HOD = Roles.objects.get( name = "HOD", department = Student.department, semester = self.student.curent_sem)
        
-        CC = Roles.objects.get( role = "CC", department = self.student.department, semester = self.student.curent_sem, section = self.student.section)
-       
-
-        HOD = Roles.objects.get( role = "CC", department = self.student.department, semester = self.student.curent_sem)
-       
-      
-
-
         
-
         if CC : 
-            self.CC = CC.id
+            self.cc = CC.teacher.id
+            
             if self.status == "Pending" or not self.status:
-
-                sendsms(f'+91{CC.phone}', "Dear CC New request for approval is pending ")
+                teacher = Teacher.objects.get(id = CC.teacher.id)
+                x=sendsms(f'+91{teacher.phone}', "Dear CC New request for approval is pending ")
+                print(x)
+                
         else :
-            self.CC = "not found"
+            self.cc = "not found"
            
             
         if  HOD: 
-            self.HOD = HOD.id
-            
+            self.hod = HOD.teacher.id
+
             
         else :
            
@@ -66,7 +63,7 @@ class student_requests(models.Model):
         
 
         if not self.request_id:
-            self.request_id = f"{self.student.rollno}-{datetime.date.today().strftime('%Y%m%d')}"
+            self.request_id = f"{self.student.roll}-{datetime.date.today().strftime('%Y%m%d')}"
 
         
         super().save(*args, **kwargs)

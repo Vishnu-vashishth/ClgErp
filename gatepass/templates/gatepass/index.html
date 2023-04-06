@@ -1,4 +1,5 @@
-{% extends 'attendance/base.html' %}
+{% extends 'gatepass/base.html' %}
+
 {% load static %}
 
 {% block title  %}{{title}} {% endblock %}
@@ -61,14 +62,18 @@
 
 {% if title == "srequest"%}
 
-{%include "studentRequest.html"%}
+{%include "gatepass/studentRequest.html"%}
 
+{% elif title == "Request List"%}
+
+{%include "gatepass/request_list.html"%}
 
 
 
 
 
 {% endif %}
+
 {% endif %}
 
 {% endblock content %}
