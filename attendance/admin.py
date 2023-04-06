@@ -14,13 +14,18 @@ class SubjectAdmin(admin.ModelAdmin):
     list_display = ('name', 'code', 'sem', 'department')
 
 class TeacherAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'password', 'phone', 'otp')
+    list_display = ('name', 'email', 'password', 'phone', 'otp', 'role')
+
+
+class RolesAdmin(admin.ModelAdmin):
+    list_display = ('name', 'section', 'department', 'semester', 'teacher')
 
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Subject, SubjectAdmin)
 admin.site.register(Agg_Attendance, Agg_AttendanceAdmin)
 admin.site.register(Teacher, TeacherAdmin)
 admin.site.register(Datewise_Attendance)
+admin.site.register(Roles, RolesAdmin)
 
 
 

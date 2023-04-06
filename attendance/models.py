@@ -3,7 +3,16 @@ from django.contrib.auth.hashers import make_password
 
 
 
-
+SEM_CHOICES = [
+        (1, 'First'),
+        (2, 'Second'),
+        (3, 'Third'),
+        (4, 'Fourth'),
+        (5, 'Fifth'),
+        (6, 'Sixth'),
+        (7, 'Seventh'),
+        (8, 'Eighth'),
+    ]
 
 class Student (models.Model):
     name = models.CharField(max_length=100)
@@ -12,6 +21,7 @@ class Student (models.Model):
         ('CSE', 'Computer Science Engineering'),
         ('ECE', 'Electronics and Communication Engineering'),
     ]
+     
     SEM_CHOICES = [
         (1, 'First'),
         (2, 'Second'),
@@ -50,12 +60,14 @@ class Student (models.Model):
         self.save()
     
 
+
 class Teacher(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
     password = models.CharField(max_length=100)
     phone = models.CharField(max_length=100)
     otp = models.CharField(max_length=6,default=None,null=True,blank=True)
+    role = models.CharField(max_length=150,default="Teacher")
 
     def __str__(self):
         return self.name
@@ -63,9 +75,19 @@ class Teacher(models.Model):
     def save(self,*args, **kwargs):
         self.password = make_password(self.password)
         super(Teacher,self).save(*args, **kwargs)
- 
+class Roles(models.Model):
+    name = models.CharField(max_length=100,default="Teacher", choices=[('Teacher','Teacher'),('HOD','HOD'),('Principal','Principal'),('CC','Class Coordinator')])
+    semester= models.IntegerField(default="All",choices=SEM_CHOICES)
+    department = models.CharField(max_length=3,default="All", choices=Student.DEPARTMENT_CHOICES)
+    teacher = models.ForeignKey('Teacher', default=None, on_delete=models.CASCADE)
+    section = models.CharField(max_length=10,default='All', choices=[('All','All'),('A','A'),('B','B'),('C','C')])
+    def __str__(self):
+        return f"{self.name}, {self.department}-{ self.semester}-{self.section}"
+    def save(self,*args, **kwargs):
+        self.teacher.role = self.name
+        super().save(*args, **kwargs)
 
-class Subject(models.Model):
+class Subject(models.Model): 
     name = models.CharField(max_length=100)
     code = models.CharField(max_length=100)
     SEM_CHOICES = [
