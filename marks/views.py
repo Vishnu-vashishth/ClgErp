@@ -346,3 +346,48 @@ def seed_univ_result(request):
      else :
             messages.error(request, 'Please Login First')
             return redirect('Login')
+     
+
+
+
+
+
+def show_univ_result(request):
+      token = request.COOKIES.get('token')
+      if token:
+        try:
+            decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+            if decoded['role'] == 'student':
+                student = Student.objects.get(email=decoded['email'])
+                univ_roll = student.univ_roll_no
+                univ_result_instance = univ_result.objects.get(univ_roll_no=univ_roll)
+                # sem01 = univ_result_instance.sem01
+                # sem02 = univ_result_instance.sem02
+                # sem03 = univ_result_instance.sem03
+                # sem04 = univ_result_instance.sem04
+                # sem05 = univ_result_instance.sem05
+                # sem06 = univ_result_instance.sem06
+                # sem07 = univ_result_instance.sem07
+                # sem08 = univ_result_instance.sem08
+                
+                
+                context = {
+                    "title":"Univ Result",
+                    "student" : student,
+                    "univ_result_instance" : univ_result_instance
+                    }
+
+
+                return render(request, 'marks/index.html', context)
+            
+            else:
+                messages.error(request, 'Invalid Credentials')
+                return redirect('Login')
+
+        except Exception as e:
+            messages.error(request, f'Something went wrong: {e}')
+            return redirect('Login')
+            
+      else:
+        messages.error(request, 'Please Login First')
+        return redirect('Login')

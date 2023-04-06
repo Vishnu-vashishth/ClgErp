@@ -1,0 +1,50 @@
+
+
+{% if univ_result_instance %}
+<div class= "mt-16 lg:shadow-lg overflow-x-auto">
+    <h1 class=" text-center text-2xl lg:text-4xl font-bold mb-4">Univesity Result  </h1>
+    <table class="table-auto w-full">
+        <thead>
+            <tr>
+                
+                <th class="px-4 py-2">Univ Roll No </th>
+                <th class="px-4 py-2">SEM1</th>
+                <th class="px-4 py-2">SEM2</th>
+                <th class="px-4 py-2">SEM3</th>
+                <th class="px-4 py-2">SEM4</th>
+                <th class="px-4 py-2">SEM5</th>
+                <th class="px-4 py-2">SEM6</th>
+                <th class="px-4 py-2">SEM7</th>
+                <th class="px-4 py-2">SEM8</th>
+                
+                
+            </tr>
+        </thead>
+        <tbody>
+            
+                <tr>
+                    
+
+                    <td class="border px-4 py-2">{{ univ_result_instance.univ_roll_no }}</td>
+                    <td class="border px-4 py-2">{{ univ_result_instance.sem01 }}</td>
+                    <td class="border px-4 py-2">{{ univ_result_instance.sem02 }}</td>
+                    <td class="border px-4 py-2">{{ univ_result_instance.sem03 }}</td>
+                    <td class="border px-4 py-2">{{ univ_result_instance.sem04 }}</td>
+                    <td class="border px-4 py-2">{{ univ_result_instance.sem05 }}</td>
+                    <td class="border px-4 py-2">{{ univ_result_instance.sem06 }}</td>
+                    <td class="border px-4 py-2">{{ univ_result_instance.sem07 }}</td>
+                    <td class="border px-4 py-2">{{ univ_result_instance.sem08 }}</td>
+                    
+                   
+                    
+                </tr>
+                </tr>
+           
+        </tbody>
+    </table>
+
+{% else %}
+    <h1 class="text-center text-2xl font-extrabold mb-4">No Result Found</h1>
+
+
+{% endif %}
