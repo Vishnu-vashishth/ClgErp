@@ -225,43 +225,74 @@ def reject_request(request,request_id):
    
 #     return render(request, 'gatepass/trackstat.html', { 'title': 'trackstat'})
     
+def trackstat(request):
+     try:
+        token = request.COOKIES.get('token')
+        if not token:
+                reqid = request.COOKIES.get('reqcode')
+                if reqid != None:
+                    req = student_requests.objects.get(request_id=reqid)
+                    return render(request, 'gatepass/showStatus.html', {'title':'show_status','req': req.status})
+                else:  
+                    return render (request, 'gatepass/trackStat.html', {'title':'track_stat'})
+                
+        decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+        if decoded['role'] == 'student':
+            student = Student.objects.get(email=decoded['email'])
+            if request.method == 'POST':
+                reqid = request.POST['reqid']
+                if student_requests.objects.filter(request_id=reqid).exists():
+                    req = student_requests.objects.get(request_id=reqid)
+                    response = redirect('show_status')
+                    response.set_cookie('reqcode', reqid)
+                    return response
+                else:
+                    messages.error(request, 'Invalid request id')
+                    return redirect('track_stat')
+            else :
+                return render(request, 'gatepass/index.html', { 'title': 'track_stat','student':student})       
+
+
+
+     except Exception as e:
+        messages.error(request, f'Something went wrong {e}')
+        return redirect('Login')
+
 
 
 
 def show_status(request):
-      token = request.COOKIES.get('token')
-      if not token:
-            reqid = request.COOKIES.get('reqcode')
-            if reqid != None:
-                req = student_requests.objects.get(request_id=reqid)
-                return render(request, 'gatepass/index.html', {'title':'showstatus','req': req.status})
-            else:  
-                return redirect('trackstat')
-           
-      else:
-           decoded = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
-           if decoded['role'] == 'student':
-                student = Student.objects.get(email=decoded['email'])
+    try:
+
+        token = request.COOKIES.get('token')
+        if not token:
                 reqid = request.COOKIES.get('reqcode')
                 if reqid != None:
-                   req = student_requests.objects.get(request_id=reqid)
-                   return render(request, 'gatepass/index.html', {'title':'showstatus','student':student,'req': req})
-
+                    req = student_requests.objects.get(request_id=reqid)
+                    return render(request, 'gatepass/showStatus.html', {'title':'show_status','req': req.status})
                 else:  
-                  return redirect('trackstat')
+                    return redirect('track_stat')
+                
+        decoded = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=['HS256'])
+            
+        
+            
+        if decoded['role'] == 'student':
+                    student = Student.objects.get(email=decoded['email'])
+                    reqid = request.COOKIES.get('reqcode')
+                    if reqid != None:
+                        req = student_requests.objects.get(request_id=reqid)
+                        return render(request, 'gatepass/index.html', {'title':'show_status','student':student,'req': req})
+
+                    else:  
+                        return redirect('track_stat')
+                    
                 
             
-           elif decoded['role'] == 'teacher':
-                teacher = Teacher.objects.get(email=decoded['email'])
-                
-                if reqid != None:
-                   req = student_requests.objects.get(request_id=reqid)
-                   return render(request, 'gatepass/index.html', {'title':'showstatus','teacher':teacher,'req': req})
 
-                else:  
-                  return redirect('trackstat')
-
-
+    except Exception as e:
+            messages.error(request, f'Something went wrong {e}')
+            return redirect('track_stat')
 
 
 
