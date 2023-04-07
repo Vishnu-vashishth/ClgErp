@@ -1,3 +1,4 @@
+{% load static %}
 {% block content %}
 
 
@@ -23,11 +24,10 @@
     </style>
 <div class="grid lg:grid-cols-3 grid-cols-1 gap-4">
 
-
     <div class="lg:col-span-1 mt-8">
         <div class="w-full rounded-lg overflow-hidden shadow-lg bg-white">
             <div class="p-4">
-              <img src="https://i.pravatar.cc/300" alt="avatar" class="h-64 w-64 mx-auto rounded-full">
+              <img src="{% static 'img/avatar.jpg'%}" alt="avatar" class="h-64 w-64 mx-auto rounded-full">
             </div>
           </div>
         </div>
@@ -50,35 +50,43 @@
             <span>{{ student.email }}</span>
           </div>
           <div class="mb-4 flex items-center">
-            <span class="font-semibold mr-2"><i class="fa fa-id-card"></i></span>
+            <span class="font-semibold mr-2"><i class="fa fa-id-card text-orange-500"></i></span>
+            <span class="font-semibold">Roll:</span>
             <span>{{ student.roll }}</span>
           </div>
           <div class="mb-4 flex items-center">
-            <span class="font-semibold mr-2"><i class="fa fa-graduation-cap"></i></span>
+            <span class="font-semibold mr-2"><i class="fa fa-graduation-cap text-orange-500"></i></span>
+            <span class="font-semibold">Semester:</span>
             <span>{{ student.curent_sem }}</span>
           </div>
           <div class="mb-4 flex items-center">
-            <span class="font-semibold mr-2"><i class="fa fa-building"></i></span>
+            <span class="font-semibold mr-2"><i class="fa fa-building text-orange-500"></i></span>
+            <span class="font-semibold">Department:</span>
             <span>{{ student.get_department_display }}</span>
           </div>
           <div class="mb-4 flex items-center">
-            <span class="font-semibold mr-2"><i class="fa fa-male"></i></span>
+            <span class="font-semibold mr-2"><i class="fa fa-male text-orange-500"></i></span>
+            <span class="font-semibold">Father Name:</span>
             <span>{{ student.father_name }}</span>
           </div>
           <div class="mb-4 flex items-center">
-            <span class="font-semibold mr-2"><i class="fa fa-female"></i></span>
+            <span class="font-semibold mr-2"><i class="fa fa-female text-orange-500"></i></span>
+            <span class="font-semibold">Mother Name:</span>
             <span>{{ student.mother_name }}</span>
           </div>
           <div class="mb-4 flex items-center">
-            <span class="font-semibold mr-2"><i class="fa fa-map-marker"></i></span>
+            <span class="font-semibold mr-2"><i class="fa fa-map-marker text-orange-500"></i></span>
+            <span class="font-semibold">Address:</span>
             <span>{{ student.address }}</span>
           </div>
           <div class="mb-4 flex items-center">
-            <span class="font-semibold mr-2"><i class="fa fa-phone"></i></span>
+            <span class="font-semibold mr-2"><i class="fa fa-phone text-orange-500"></i></span>
+            <span class="font-semibold">Phone:</span>
             <span>{{ student.phone }}</span>
           </div>
           <div class="mb-4 flex items-center">
-            <span class="font-semibold mr-2"><i class="fa fa-phone"></i></span>
+            <span class="font-semibold mr-2"><i class="fa fa-phone text-orange-500"></i></span>
+            <span class="font-semibold">Father Phone:</span>
             <span>{{ student.father_phone }}</span>
           </div>
         </div>
@@ -109,12 +117,6 @@
          <span class="font-semibold">Phone:</span>
          <span>{{ teacher.phone }}</span>
        </div>
-       
-       
-      
-        
-      
-       
      </div>
    </div>
  </div>

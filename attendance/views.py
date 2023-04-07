@@ -286,7 +286,13 @@ def saveAttendance(request):
                             attendance, created = Agg_Attendance.objects.get_or_create(student=student, subject=subject)
                             attendance.status = 'A'
                             attendance.save()
+                        students_absent_list = set(studentid) - set(students_present)
 
+                        for student_id in students_absent_list:
+                            student = Student.objects.get(id=student_id)
+                            attendance, created = Agg_Attendance.objects.get_or_create(student=student, subject=subject)
+                            attendance.status = 'A'
+                            attendance.save()
 
 
                             datewise_attendance, created = Datewise_Attendance.objects.get_or_create(student=student, date=date_obj)
