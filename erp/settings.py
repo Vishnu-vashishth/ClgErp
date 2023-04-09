@@ -37,6 +37,8 @@ EMAIL_HOST_PASSWORD = 'nwzipjywxfibzfci'
 
 
 STATICFILES_DIRS = [BASE_DIR / 'static']
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -118,7 +120,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'erp',
         'USER': 'postgres',
-        'PASSWORD': 'Vish@98733',
+        'PASSWORD': 'Harsh@123',
         'HOST': 'localhost',
         'PORT': '5432',
 
